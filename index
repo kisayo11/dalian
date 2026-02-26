@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🇨🇳 대련 2박 3일 팀 빌딩 일정</title>
+    <!-- 트렌디하고 가독성 높은 Pretendard 웹폰트 적용 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            /* 컬러 팔레트 정의 */
+            --primary: #4361ee;
+            --primary-light: #eef2ff;
+            --dark: #2b2d42;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-600: #6c757d;
+            --gray-800: #343a40;
+            --bg-color: #f4f6f9;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--gray-100);
+            padding-bottom: 25px;
+        }
+
+        h2 {
+            font-size: 2.2em;
+            font-weight: 800;
+            margin: 0 0 15px 0;
+            color: var(--dark);
+            letter-spacing: -0.03em;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            font-size: 1.05em;
+            color: var(--gray-600);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--gray-100);
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-weight: 500;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--gray-200);
+        }
+
+        th,
+        td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #f1f3f5;
+            color: var(--gray-800);
+            font-weight: 700;
+            font-size: 0.95em;
+            letter-spacing: 0.05em;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:not(.day-header) {
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:not(.day-header):hover {
+            background-color: var(--primary-light);
+            transform: translateY(-1px);
+        }
+
+        .day-header td {
+            color: white;
+            font-weight: 700;
+            font-size: 1.1em;
+            letter-spacing: 0.02em;
+        }
+
+        .day-1 td {
+            background: linear-gradient(135deg, #3a0ca3, #4361ee);
+        }
+
+        .day-2 td {
+            background: linear-gradient(135deg, #f72585, #b5179e);
+        }
+
+        .day-3 td {
+            background: linear-gradient(135deg, #0ba360, #3cbc76);
+        }
+
+        .time {
+            font-weight: 800;
+            color: var(--primary);
+            font-size: 1.1em;
+            white-space: nowrap;
+        }
+
+        .day-header.day-2~tr .time {
+            color: #f72585;
+        }
+
+        .day-header.day-3~tr .time {
+            color: #0ba360;
+        }
+
+        .location {
+            color: var(--gray-600);
+            font-size: 0.85em;
+            display: inline-block;
+            background: var(--bg-color);
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        .badge-transport {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.85em;
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .badge-transport.walk {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+
+        .badge-transport.subway {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        /* 비고 스타일링 추가 */
+        .remark-note {
+            font-size: 0.85em;
+            color: var(--gray-600);
+            line-height: 1.4;
+            display: inline-block;
+        }
+
+        .remark-note span.highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 25px 15px;
+            }
+
+            th,
+            td {
+                padding: 12px 10px;
+                font-size: 0.9em;
+            }
+
+            .location {
+                display: block;
+                margin-top: 6px;
+            }
+
+            h2 {
+                font-size: 1.8em;
+            }
+
+            .meta-item {
+                padding: 8px 12px;
+                font-size: 0.9em;
+            }
+
+            .time {
+                font-size: 1em;
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>🇨🇳 대련 2박 3일 팀 빌딩 일정</h2>
+            <div class="meta-info">
+                <div class="meta-item">🏨 <span><strong>숙소:</strong> 노보텔 대련 중산</span></div>
+                <div class="meta-item">🗓️ <span><strong>기간:</strong> 2026.02.28 - 03.02</span></div>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>시간</th>
+                    <th>일정 및 장소</th>
+                    <th>이동 정보</th>
+                    <th>비고 (특이사항)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 1일차 -->
+                <tr class="day-header day-1">
+                    <td colspan="4">✈️ 1일차 (2/28, 금) - 도착 및 로컬 탐방</td>
+                </tr>
+                <tr>
+                    <td class="time">20:00</td>
+                    <td>
+                        <strong>호텔 체크인</strong><br>
+                        <span class="location">🇨🇳 中山路 158号</span>
+                    </td>
+                    <td><span class="badge-transport">🚗 디디 (35분)</span></td>
+                    <td>
+                        <div class="remark-note">여권 및 바우처 준비<br>예약자 성함 확인</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="time">20:40</td>
+                    <td>
+                        <strong>시안루 야시장</strong><br>
+                        <span class="location">🇨🇳 西安路 中央大道</span>
+                    </td>
+                    <td><span class="badge-transport">🚗 디디 (20분)</span></td>
+                    <td>
+                        <div class="remark-note">현지 길거리 음식 체험<br><span class="highlight">현금 또는 알리페이</span> 필수</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="time">22:30</td>
+                    <td>
+                        <strong>천호천 (호텔 1층)</strong><br>
+                        <span class="location">🇨🇳 春和楼</span>
+                    </td>
+                    <td><span class="badge-transport walk">🚶 도보</span></td>
+                    <td>
+                        <div class="remark-note">간단한 야식 및 친목 도모<br>해산물 요리 추천</div>
+                    </td>
+                </tr>
+
+                <!-- 2일차 -->
+                <tr class="day-header day-2">
+                    <td colspan="4">☕ 2일차 (3/1, 일) - 감성 및 힐링</td>
+                </tr>
+                <tr>
+                    <td class="time">10:30</td>
+                    <td>
+                        <strong>난산 일본거리 카페</strong><br>
+                        <span class="location">🇨🇳 南山路</span>
+                    </td>
+                    <td><span class="badge-transport">🚗 디디 (15분)</span></td>
+                    <td>
+                        <div class="remark-note">사진 촬영 스팟 추천<br>여유로운 모닝 커피</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="time">12:30</td>
+                    <td>
+                        <strong>시딩 (성게알만두)</strong><br>
+                        <span class="location">🇨🇳 柏威年 5층</span>
+                    </td>
+                    <td><span class="badge-transport">🚗 디디 (15분)</span></td>
+                    <td>
+                        <div class="remark-note">현지 유명 맛집<br><span class="highlight">시그니처 메뉴</span> 주문 필수</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="time">15:00</td>
+                    <td>
+                        <strong>전신 마사지</strong><br>
+                        <span class="location">📍 시내 샵</span>
+                    </td>
+                    <td><span class="badge-transport">🚗 디디 (10분)</span></td>
+                    <td>
+                        <div class="remark-note"><span class="highlight">사전 예약 확인</span> 요망<br>편안한 복장 권장</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="time">17:30</td>
+                    <td>
+                        <strong>베네치아 수성</strong><br>
+                        <span class="location">🇨🇳 东方水城</span>
+                    </td>
+                    <td><span class="badge-transport">🚗 디디 (15분)</span></td>
+                    <td>
+                        <div class="remark-note">이국적인 야경 감상 포인트<br>시간 시 곤돌라 탑승 고려</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="time">19:30</td>
+                    <td>
+                        <strong>베이징덕 석식</strong><br>
+                        <span class="location">🇨🇳 全聚德</span>
+                    </td>
+                    <td><span class="badge-transport">🚗 디디 (15분)</span></td>
+                    <td>
+                        <div class="remark-note">전취덕 (취엔쥐더)<br>고급 카오야 정찬</div>
+                    </td>
+                </tr>
+
+                <!-- 3일차 -->
+                <tr class="day-header day-3">
+                    <td colspan="4">🛍️ 3일차 (3/2, 월) - 역사 및 쇼핑</td>
+                </tr>
+                <tr>
+                    <td class="time">10:00</td>
+                    <td>
+                        <strong>동관지에 탐방</strong><br>
+                        <span class="location">🇨🇳 东关街</span>
+                    </td>
+                    <td><span class="badge-transport">🚗 디디 (10분)</span></td>
+                    <td>
+                        <div class="remark-note">대련 옛 거리 산책<br>편안한 신발 착용</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="time">12:00</td>
+                    <td>
+                        <strong>파빌리온 몰 (식사/쇼핑)</strong><br>
+                        <span class="location">🇨🇳 柏威年</span>
+                    </td>
+                    <td><span class="badge-transport">🚗 디디 (10분)</span></td>
+                    <td>
+                        <div class="remark-note">귀국 전 자유 쇼핑 타임<br>기념품 구입 추천</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="time">16:30</td>
+                    <td>
+                        <strong>공항 이동</strong><br>
+                        <span class="location">🇨🇳 大连机场</span>
+                    </td>
+                    <td><span class="badge-transport">🚗 디디 (40분)</span></td>
+                    <td>
+                        <div class="remark-note"><span class="highlight">항공권 및 여권</span> 재확인<br>출발 2시간 전 도착 요망</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
