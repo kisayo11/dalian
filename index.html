@@ -3,226 +3,265 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🇨🇳 대련 2박 3일 여행 일정</title>
     <!-- 트렌디하고 가독성 높은 Pretendard 웹폰트 적용 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
     <style>
         :root {
-            /* 컬러 팔레트 정의 */
-            --primary: #4361ee;
-            --primary-light: #eef2ff;
-            --dark: #2b2d42;
-            --gray-100: #f8f9fa;
-            --gray-200: #e9ecef;
-            --gray-600: #6c757d;
-            --gray-800: #343a40;
-            --bg-color: #f4f6f9;
+            --primary: #0052CC;
+            --primary-light: #E9F2FF;
+            --dark: #172B4D;
+            --gray-100: #F4F5F7;
+            --gray-200: #DFE1E6;
+            --gray-500: #7A869A;
+            --gray-600: #5E6C84;
+            --gray-800: #344563;
+            --bg-color: #F8F9FA;
+            --accent-red: #DE350B;
+            --accent-yellow: #FFFAE6;
+            --border-yellow: #FFC400;
+            --card-shadow: 0 2px 8px rgba(9, 30, 66, 0.08);
         }
 
         body {
             font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-            line-height: 1.6;
+            line-height: 1.5;
             color: var(--dark);
             background-color: var(--bg-color);
             margin: 0;
-            padding: 40px 20px;
-            display: flex;
-            justify-content: center;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
         }
 
+        /* 모바일 최적화 컨테이너 */
         .container {
-            max-width: 1200px;
-            /* 넓이 확장 */
+            max-width: 600px;
+            /* 모바일 폭 기준 제한 */
             width: 100%;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-            overflow: hidden;
-            padding: 40px;
-            box-sizing: border-box;
+            margin: 0 auto;
+            background: var(--bg-color);
+            padding-bottom: 80px;
+            /* 하단 플로팅 버튼 여백 */
         }
 
         .header {
-            text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--gray-100);
-            padding-bottom: 25px;
+            background-color: white;
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--gray-200);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         h2 {
-            font-size: 2.2em;
+            font-size: 1.5em;
             font-weight: 800;
-            margin: 0 0 15px 0;
+            margin: 0 0 12px 0;
             color: var(--dark);
-            letter-spacing: -0.03em;
+            text-align: left;
         }
 
         .meta-info {
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            font-size: 1.05em;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 0.9em;
             color: var(--gray-600);
         }
 
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--gray-100);
-            padding: 10px 18px;
-            border-radius: 30px;
-            font-weight: 500;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin-top: 20px;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-            border: 1px solid var(--gray-200);
-        }
-
-        th,
-        td {
-            padding: 16px 18px;
-            text-align: left;
-            border-bottom: 1px solid var(--gray-200);
-            vertical-align: top;
-            /* 텍스트 상단 정렬 */
-        }
-
-        th {
-            background-color: #f1f3f5;
-            color: var(--gray-800);
-            font-weight: 700;
-            font-size: 0.95em;
-            letter-spacing: 0.05em;
-            text-align: center;
-        }
-
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        tbody tr:not(.day-header) {
-            transition: all 0.2s ease;
-        }
-
-        tbody tr:not(.day-header):hover {
-            background-color: var(--primary-light);
-            transform: translateY(-1px);
-        }
-
-        .day-header td {
+        /* 일자별 섹션 헤더 (스티키) */
+        .day-header {
+            background-color: var(--gray-800);
             color: white;
             font-weight: 700;
             font-size: 1.1em;
-            letter-spacing: 0.02em;
-            text-align: left;
-            /* 요일 헤더는 좌측 정렬 */
-            vertical-align: middle;
+            padding: 12px 20px;
+            position: sticky;
+            top: 96px;
+            /* 헤더 아래 위치 */
+            z-index: 90;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 10px;
         }
 
-        .day-1 td {
-            background: linear-gradient(135deg, #3a0ca3, #4361ee);
+        /* 일정 카드 리스트 (테이블을 버리고 ul/li + card 기반으로 재구축) */
+        .timeline {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
 
-        .day-2 td {
-            background: linear-gradient(135deg, #f72585, #b5179e);
+        .timeline-item {
+            background: white;
+            margin: 12px 16px;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
-        .day-3 td {
-            background: linear-gradient(135deg, #0ba360, #3cbc76);
+        /* 카드 상단: 시간 및 메인 타이틀 */
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            padding: 16px 16px 12px 16px;
+            border-bottom: 1px dashed var(--gray-200);
         }
 
-        .time {
+        .time-badge {
             font-weight: 800;
             color: var(--primary);
-            font-size: 1.05em;
-            white-space: nowrap;
+            background: var(--primary-light);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.95em;
+            margin-right: 14px;
+            min-width: 48px;
             text-align: center;
         }
 
-        .day-header.day-2~tr .time {
-            color: #f72585;
+        .place-info {
+            flex: 1;
         }
 
-        .day-header.day-3~tr .time {
-            color: #0ba360;
+        .place-name {
+            font-size: 1.1em;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 4px;
+            line-height: 1.3;
         }
 
-        .location {
-            color: var(--gray-600);
-            font-size: 0.85em;
-            display: inline-block;
-            background: var(--bg-color);
-            padding: 4px 10px;
-            border-radius: 6px;
-            margin-top: 6px;
-            font-weight: 600;
-        }
-
-        .badge-transport {
+        .transport {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            gap: 4px;
-            font-size: 0.85em;
-            background-color: #fff3cd;
-            color: #856404;
-            padding: 5px 12px;
+            font-size: 0.8em;
+            color: var(--dark);
+            background: #E3FCEF;
+            /* 연한 민트/그린 바탕 (좀 더 예쁜 칩 색상) */
+            padding: 4px 10px;
             border-radius: 20px;
+            /* 완전 둥근 Pill/Chip 모양 */
             font-weight: 700;
-            white-space: nowrap;
+            border: 1px solid #36B37E;
         }
 
-        .badge-transport.walk {
-            background-color: #e2e3e5;
-            color: #383d41;
+        /* 칩 종류별 색상 세분화 (선택적 사용) */
+        .transport.didi {
+            background: #FFF0B3;
+            border-color: #FFAB00;
+            color: #333;
         }
 
-        .badge-transport.flight {
-            background-color: #d1ecf1;
-            color: #0c5460;
+        .transport.walk {
+            background: #E9F2FF;
+            border-color: #4C9AFF;
+            color: var(--primary);
         }
 
-        /* 세부내용 스타일링 */
-        .details-col {
-            font-size: 0.9em;
+        .transport.flight {
+            background: #EAE6FF;
+            border-color: #998DD9;
+            color: #403294;
+        }
+
+        /* 복사 가능한 주소 UI (모바일 터치 친화적) */
+        .address-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--gray-100);
+            border: 1px solid var(--gray-200);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-top: 8px;
+        }
+
+        .address-text {
+            user-select: all;
+            font-size: 0.95em;
             color: var(--gray-800);
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .copy-btn {
+            background: white;
+            border: 1px solid var(--gray-200);
+            cursor: pointer;
+            padding: 6px 12px;
+            color: var(--primary);
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .copy-btn:active {
+            background-color: var(--gray-200);
+            transform: scale(0.98);
+        }
+
+        /* 카드 하단: 세부 내용 및 비고 */
+        .card-body {
+            padding: 12px 16px 16px 16px;
+        }
+
+        .details-col {
+            font-size: 0.95em;
             line-height: 1.5;
+            color: var(--gray-800);
         }
 
         .details-col ul {
-            margin: 4px 0 0 0;
+            margin: 0;
             padding-left: 18px;
-            color: var(--gray-600);
-            font-size: 0.95em;
         }
 
         .details-col li {
-            margin-bottom: 3px;
+            margin-bottom: 6px;
         }
 
-        /* 비고 스타일링 */
-        .remark-col {
-            font-size: 0.85em;
-            color: var(--gray-600);
-            background-color: #fff8e1;
-            /* 연한 노란색 배경으로 구분감 주기 */
-            padding: 10px;
+        .details-col li:last-child {
+            margin-bottom: 0;
+        }
+
+        .remark-box {
+            margin-top: 12px;
+            font-size: 0.9em;
+            color: var(--gray-800);
+            background-color: var(--accent-yellow);
+            padding: 10px 12px;
             border-radius: 6px;
-            border-left: 3px solid #ffc107;
+            border-left: 3px solid var(--border-yellow);
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        .remark-icon {
+            font-size: 1.1em;
+            line-height: 1;
+        }
+
+        .remark-content {
+            flex: 1;
+            line-height: 1.5;
         }
 
         .highlight {
-            color: #e63946;
+            color: var(--accent-red);
             font-weight: 700;
         }
 
@@ -231,491 +270,819 @@
             font-weight: 700;
         }
 
-        /* 테이블 열 너비 비율 조정 */
-        th:nth-child(1) {
-            width: 10%;
+        /* 모바일 하단 고정 노션 버튼 (Safe Area 대응) */
+        .floating-notion {
+            position: fixed;
+            bottom: max(20px, env(safe-area-inset-bottom));
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            color: var(--dark);
+            padding: 14px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1em;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--gray-200);
+            width: calc(100% - 40px);
+            max-width: 360px;
+            z-index: 1000;
         }
 
-        /* 시간 */
-        th:nth-child(2) {
-            width: 22%;
+        .notion-icon {
+            width: 20px;
+            height: 20px;
         }
 
-        /* 일정 */
-        th:nth-child(3) {
-            width: 12%;
+
+        /* 옵션 탭 시스템 (스위치 버튼 스타일) */
+        .option-container {
+            margin: 12px 16px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--primary);
+            overflow: hidden;
+            position: relative;
         }
 
-        /* 이동 */
-        th:nth-child(4) {
-            width: 36%;
+        .option-header {
+            background-color: var(--primary-light);
+            padding: 10px 16px;
+            font-size: 0.9em;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid var(--gray-200);
         }
 
-        /* 세부내용 */
-        th:nth-child(5) {
-            width: 20%;
+        .tabs {
+            display: flex;
+            padding: 12px 16px;
+            gap: 8px;
+            background: #FAFBFC;
+            border-bottom: 1px solid var(--gray-200);
         }
 
-        /* 비고 */
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9em;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
 
-        @media (max-width: 900px) {
-            body {
-                padding: 10px;
-            }
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0, 82, 204, 0.2);
+        }
 
-            .container {
-                padding: 20px 10px;
-            }
+        .tab-content {
+            display: none;
+        }
 
-            th,
-            td {
-                padding: 10px 8px;
-                font-size: 0.9em;
-            }
+        .tab-content.active {
+            display: block;
+        }
 
-            h2 {
-                font-size: 1.6em;
-            }
+        /* 옵션 내부의 카드 스타일 (timeline-item의 패딩과 공유) */
+        .option-card-header {
+            display: flex;
+            align-items: flex-start;
+            padding: 16px 16px 12px 16px;
+            border-bottom: 1px dashed var(--gray-200);
+        }
 
-            table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
+        /* 토스트 알림 (모바일에 맞게 하단 플로팅 버튼 위로) */
+        #toast {
+            visibility: hidden;
+            width: auto;
+            background-color: rgba(23, 43, 77, 0.9);
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 12px 24px;
+            position: fixed;
+            z-index: 2000;
+            left: 50%;
+            bottom: max(80px, calc(env(safe-area-inset-bottom) + 80px));
+            transform: translateX(-50%);
+            font-size: 0.9em;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(4px);
+        }
 
-            .details-col ul {
-                white-space: normal;
-            }
-
-            .remark-col {
-                white-space: normal;
-            }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: max(90px, calc(env(safe-area-inset-bottom) + 90px));
         }
     </style>
 </head>
 
 <body>
     <div class="container">
+
         <div class="header">
             <h2>🇨🇳 대련 2박 3일 일정</h2>
             <div class="meta-info">
-                <div class="meta-item">🏨 <span><strong>숙소:</strong> 노보텔 대련 중산 (大连中山广场诺富特酒店)</span></div>
-                <div class="meta-item">🗓️ <span><strong>기간:</strong> 2026.02.28(토) - 03.02(월)</span></div>
+                <div class="meta-item">🏨 <strong>노보텔 대련 중산</strong></div>
+                <div class="meta-item">🗓️ <strong>2026.02.28(토) - 03.02(월)</strong></div>
             </div>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>시간</th>
-                    <th>일정 및 장소</th>
-                    <th>이동 정보</th>
-                    <th>세부 내용</th>
-                    <th>비고 (특이사항)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 1일차 -->
-                <tr class="day-header day-1">
-                    <td colspan="5">✈️ 1일차 (2/28, 토) - 출국 및 로컬 탐방</td>
-                </tr>
-                <tr>
-                    <td class="time">12:00</td>
-                    <td>
-                        <strong>천호역 공영주차장</strong>
-                    </td>
-                    <td><span class="badge-transport walk">🚗 자차/대중</span></td>
-                    <td>
-                        <div class="details-col">출국을 위한 집결</div>
-                    </td>
-                    <td>
-                        <div class="remark-col"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">17:30</td>
-                    <td>
-                        <strong>인천 ✈️ 대련</strong><br>
-                        <span class="location">대련공항 (大连周水子国际机场)</span>
-                    </td>
-                    <td><span class="badge-transport flight">✈️ 비행기</span></td>
-                    <td>
-                        <div class="details-col">
-                            인천 17:30 -> 대련 17:50 (1시간 20분)
+        <ul class="timeline">
+            <!-- 1일차 -->
+            <li class="day-header">✈️ Day 1 (2/28, 토)</li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge">12:00</div>
+                    <div class="place-info">
+                        <div class="place-name">천호역 공영주차장</div>
+                        <div class="transport didi">🚗 자차/대중</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">출국을 위한 집결</div>
+                    <div class="remark-box">
+                        <span class="remark-icon">💡</span>
+                        <div class="remark-content">여권 지참 필수</div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge">17:30</div>
+                    <div class="place-info">
+                        <div class="place-name">인천 ✈️ 대련공항</div>
+                        <div class="address-box" onclick="copyToClipboard('大连周水子国际机场')">
+                            <span class="address-text">大连周水子国际机场</span>
+                            <button class="copy-btn">📋 복사</button>
                         </div>
-                    </td>
-                    <td>
-                        <div class="remark-col">대련 현지 도착 예상 시간: <br><span class="highlight-blue">17:50</span> (시차 -1시간)
+                        <div class="transport flight" style="margin-top:8px;">✈️ 비행기</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">인천 17:30 -> 대련 17:50 (1시간 20분)</div>
+                    <div class="remark-box">
+                        <span class="remark-icon">⏰</span>
+                        <div class="remark-content">대련 현지 도착: <strong class="highlight-blue">17:50</strong> (시차 -1시간)
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">18:30 예상</td>
-                    <td>
-                        <strong>호텔 체크인</strong><br>
-                        <span class="location">노보텔 (大连中山广场诺富特酒店)</span>
-                    </td>
-                    <td><span class="badge-transport">🚕 디디 (30분)</span></td>
-                    <td>
-                        <div class="details-col">대련공항 -> 노보텔 이동 및 체크인</div>
-                    </td>
-                    <td>
-                        <div class="remark-col"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">19:30 선택</td>
-                    <td>
-                        <strong>성해광장 (星海广场)</strong>
-                    </td>
-                    <td><span class="badge-transport">🚕 디디</span></td>
-                    <td>
-                        <div class="details-col">
-                            <ul>
-                                <li>레이저쇼: 19:30 / 20:30 / 21:30 (평일2회, 주말3회)</li>
-                            </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge"><span
+                            style="font-size:0.7em;color:var(--gray-600);display:block;margin-bottom:-4px;">예상</span>18:30
+                    </div>
+                    <div class="place-info">
+                        <div class="place-name">호텔 체크인 (노보텔)</div>
+                        <div class="address-box" onclick="copyToClipboard('大连中山广场诺富特酒店')">
+                            <span class="address-text">大连中山广场诺富特酒店</span>
+                            <button class="copy-btn">📋 복사</button>
                         </div>
-                    </td>
-                    <td>
-                        <div class="remark-col">시간과 날씨가 괜찮을 경우 방문</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">20:30</td>
-                    <td>
-                        <strong>서안로 야시장</strong><br>
-                        <span class="location">西安路夜市 (中央大道吾悦广场店/长兴里)</span>
-                    </td>
-                    <td><span class="badge-transport">🚕 디디</span></td>
-                    <td>
+                        <div class="transport didi" style="margin-top:8px;">🚕 디디 (30분)</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">대련공항 -> 노보텔 이동 및 체크인</div>
+                    <div class="remark-box">
+                        <span class="remark-icon">💡</span>
+                        <div class="remark-content">체크인 시 바우처 제시</div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge"><span
+                            style="font-size:0.7em;color:var(--gray-600);display:block;margin-bottom:-4px;">선택</span>19:30
+                    </div>
+                    <div class="place-info">
+                        <div class="place-name">성해광장</div>
+                        <div class="address-box" onclick="copyToClipboard('星海广场')">
+                            <span class="address-text">星海广场</span>
+                            <button class="copy-btn">📋 복사</button>
+                        </div>
+                        <div class="transport" style="margin-top:8px;">🚕 디디</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">
+                        <ul>
+                            <li>레이저쇼: 19:30 / 20:30 / 21:30 (평일2회, 주말3회)</li>
+                        </ul>
+                    </div>
+                    <div class="remark-box">
+                        <span class="remark-icon">☁️</span>
+                        <div class="remark-content">시간과 날씨가 괜찮을 경우 방문</div>
+                    </div>
+                </div>
+            </li>
+
+            <!-- 야시장 옵션 탭 (Day 1) -->
+            <li class="option-container">
+                <div class="option-header">
+                    <span>🔄 1일차 야시장 코스 선택</span>
+                </div>
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('nm', 'nm-1', this)">옵션 A: 서안로 야시장</button>
+                    <button class="tab-btn" onclick="switchTab('nm', 'nm-2', this)">옵션 B: 라오지에 야시장</button>
+                </div>
+
+                <!-- 옵션 A: 서안로 -->
+                <div id="nm-1" class="tab-content nm active">
+                    <div class="option-card-header">
+                        <div class="time-badge">20:30</div>
+                        <div class="place-info">
+                            <div class="place-name">서안로 야시장</div>
+                            <div class="address-box" onclick="copyToClipboard('西安路夜市中央大道')">
+                                <span class="address-text">西安路夜市中央大道</span>
+                                <button class="copy-btn">📋 복사</button>
+                            </div>
+                            <div class="transport" style="margin-top:8px;">🚕 디디</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
                         <div class="details-col">
                             <ul>
                                 <li>지하1층 실내 / 10:00 ~ 22:30</li>
-                                <li>같은 건물에 빅유마트, 헤이티, 패왕차희 있음</li>
-                                <li><span class="highlight">대표메뉴:</span> 냉면구이, 셩지엔(구운만두), 먼즈, 보보지, 꿔바로우, 소시지구이, 꿀고구마 등
-                                </li>
+                                <li>건물 내 빅유마트, 헤이티, 패왕차희 입점</li>
+                                <li><strong class="highlight-blue">대표메뉴:</strong> 냉면구이, 셩지엔, 먼즈, 보보지, 꿔바로우, 소시지구이, 꿀고구마
+                                    등</li>
                             </ul>
                         </div>
-                    </td>
-                    <td>
-                        <div class="remark-col">현금 결제 필요 여부 확인</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">22:30</td>
-                    <td>
-                        <strong>천후촨</strong><br>
-                        <span class="location">호텔 1층</span>
-                    </td>
-                    <td><span class="badge-transport walk">🚶 도보</span></td>
-                    <td>
-                        <div class="details-col">
-                            <ul>
-                                <li>영업시간: 11:00 ~ 02:00</li>
-                                <li><span class="highlight">대표메뉴:</span> 해산물덮밥, 굴구이, 양꼬치, 부추구이 등</li>
-                            </ul>
+                        <div class="remark-box">
+                            <span class="remark-icon">💵</span>
+                            <div class="remark-content">알리페이 및 소액 현금 유용</div>
                         </div>
-                    </td>
-                    <td>
-                        <div class="remark-col">
-                            - 식기 <span class="highlight">인당 4위안</span> 추가<br>
-                            - <strong style="color:red">QR주문X</strong>, 주방 앞 서있는 직원에게 직접 주문
-                        </div>
-                    </td>
-                </tr>
+                    </div>
+                </div>
 
-                <!-- 2일차 -->
-                <tr class="day-header day-2">
-                    <td colspan="5">🍱 2일차 (3/1, 일) - 북경오리 및 훠궈 무한리필</td>
-                </tr>
-                <tr>
-                    <td class="time">10:00</td>
-                    <td>
-                        <strong>신흥전승오리구이</strong><br>
-                        <span class="location">新兴传承烤鸭 (大连老街店)</span>
-                    </td>
-                    <td><span class="badge-transport">🚕 디디</span></td>
-                    <td>
+                <!-- 옵션 B: 라오지에 -->
+                <div id="nm-2" class="tab-content nm">
+                    <div class="option-card-header">
+                        <div class="time-badge">20:30</div>
+                        <div class="place-info">
+                            <div class="place-name">라오지에 야시장 (중앙소로)</div>
+                            <div class="address-box" onclick="copyToClipboard('天津街')">
+                                <span class="address-text">天津街 (Tianjin Street / 老街)</span>
+                                <button class="copy-btn">📋 복사</button>
+                            </div>
+                            <div class="transport" style="margin-top:8px;">🚕 디디 / 도보</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
                         <div class="details-col">
                             <ul>
-                                <li>베이징덕</li>
+                                <li>옛 대련의 정취를 느낄 수 있는 야외 포장마차 & 야시장 거리</li>
+                                <li>해산물 꼬치, 오징어 구이, 과일탕후루 등 다양한 길거리 음식</li>
                             </ul>
                         </div>
-                    </td>
-                    <td>
-                        <div class="remark-col"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">11:30</td>
-                    <td>
-                        <strong>동관지에 (东关街)</strong><br>
-                        <span class="location">东关街历史文化街区</span>
-                    </td>
-                    <td><span class="badge-transport">🚕 디디</span></td>
-                    <td>
+                        <div class="remark-box">
+                            <span class="remark-icon">🌆</span>
+                            <div class="remark-content">야외라 날씨의 영향을 받을 수 있음</div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge">22:30</div>
+                    <div class="place-info">
+                        <div class="place-name">천후촨</div>
+                        <div class="address-box" onclick="copyToClipboard('春和楼')">
+                            <span class="address-text">春和楼</span>
+                            <button class="copy-btn">📋 복사</button>
+                        </div>
+                        <div class="transport" style="margin-top:8px;">🚶 도보 (호텔 1층)</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">
+                        <ul>
+                            <li>11:00 ~ 02:00</li>
+                            <li><strong class="highlight-blue">대표메뉴:</strong> 해산물덮밥, 굴구이, 양꼬치, 부추구이 등</li>
+                        </ul>
+                    </div>
+                    <div class="remark-box">
+                        <span class="remark-icon">⚠️</span>
+                        <div class="remark-content">
+                            - 식기 <strong class="highlight">인당 4위안</strong> 추가<br>
+                            - <strong class="highlight">QR주문 X</strong> (주방 직원에게 직접 주문)
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <!-- 2일차 -->
+            <li class="day-header">🍱 Day 2 (3/1, 일)</li>
+
+            <!-- 아침시장 옵션 탭 (Day 2) -->
+            <li class="option-container">
+                <div class="option-header">
+                    <span>🔄 2일차 기상 기상 시간 및 오전 일정</span>
+                </div>
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('mm', 'mm-1', this)">여유롭게 출발</button>
+                    <button class="tab-btn" onclick="switchTab('mm', 'mm-2', this)">이른 기상 & 아침시장</button>
+                </div>
+
+                <!-- 옵션 A: 여유롭게 출발 -->
+                <div id="mm-1" class="tab-content mm active">
+                    <div class="card-body" style="text-align:center; padding: 30px; color: var(--gray-600);">
+                        <div style="font-size: 2em; margin-bottom: 10px;">☕</div>
+                        호텔 조식 또는 충분한 휴식 후<br><strong>10:00 에 오리구이집으로 바로 출발</strong>합니다.
+                    </div>
+                </div>
+
+                <!-- 옵션 B: 아침시장 -->
+                <div id="mm-2" class="tab-content mm">
+                    <div class="option-card-header">
+                        <div class="time-badge">07:30</div>
+                        <div class="place-info">
+                            <div class="place-name">도원시장 (아침시장)</div>
+                            <div class="address-box" onclick="copyToClipboard('桃源早市')">
+                                <span class="address-text">桃源早市</span>
+                                <button class="copy-btn">📋 복사</button>
+                            </div>
+                            <div class="transport didi" style="margin-top:8px;">🚕 디디</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
                         <div class="details-col">
                             <ul>
-                                <li>대표: 블랜버니티, 소품샵, 카페 등</li>
+                                <li>로컬 느낌 물씬 나는 활기찬 아침 시장 체험</li>
+                                <li>꽈배기(요우티아오), 콩국(또우장), 열대과일 득템 찬스</li>
+                                <li>오후에는 닫기 때문에 반드시 오전에 가야 함</li>
                             </ul>
                         </div>
-                    </td>
-                    <td>
-                        <div class="remark-col"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">13:00</td>
-                    <td>
-                        <strong>파빌리온 몰</strong><br>
-                        <span class="location">柏威年</span>
-                    </td>
-                    <td><span class="badge-transport">🚕 디디</span></td>
-                    <td>
+                        <div class="remark-box">
+                            <span class="remark-icon">🌞</span>
+                            <div class="remark-content">시장 구경 후 호텔 복귀 또는 바로 오리구이집으로 이동</div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge">10:00</div>
+                    <div class="place-info">
+                        <div class="place-name">신흥전승오리구이</div>
+                        <div class="address-box" onclick="copyToClipboard('新兴传承烤鸭(大连老街店)')">
+                            <span class="address-text">新兴传承烤鸭(大连老街店)</span>
+                            <button class="copy-btn">📋 복사</button>
+                        </div>
+                        <div class="transport didi" style="margin-top:8px;">🚕 디디</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">
+                        <ul>
+                            <li>베이징덕</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge">11:30</div>
+                    <div class="place-info">
+                        <div class="place-name">동관지에</div>
+                        <div class="address-box" onclick="copyToClipboard('东关街历史文化街区')">
+                            <span class="address-text">东关街历史文化街区</span>
+                            <button class="copy-btn">📋 복사</button>
+                        </div>
+                        <div class="transport didi" style="margin-top:8px;">🚕 디디</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">
+                        <ul>
+                            <li>대표: 블랜버니티(차), 소품샵, 카페 등</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge">13:00</div>
+                    <div class="place-info">
+                        <div class="place-name">하우스키야키 파빌리온점</div>
+                        <div class="address-box" onclick="copyToClipboard('贺牛寿喜烧专门店(柏威年)')">
+                            <span class="address-text">贺牛寿喜烧专门店(柏威年)</span>
+                            <button class="copy-btn">📋 복사</button>
+                        </div>
+                        <div class="transport walk" style="margin-top:8px;">� 도보 (파빌리온 5층)</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">
+                        <ul>
+                            <li>10:30~21:00 (런치 할인은 평일 10:00~14:00만 적용)</li>
+                            <li>육수: 스키야키 + 마라 조합 👍🏻</li>
+                            <li><strong class="highlight-blue">소스:</strong> 마장소스1, 파1, 다진마늘0.5, 다진고추0.5, 참기름0.5</li>
+                        </ul>
+                    </div>
+                    <div class="remark-box">
+                        <span class="remark-icon">⚠️</span>
+                        <div class="remark-content">
+                            - 무한리필 <strong class="highlight">인당 199위안</strong> (3월 1일 일요일 기준)<br>
+                            - 평일(월~금) 런치 시간에 방문 시 139위안<br>
+                            - 크림브륄레는 <strong>직원분께 별도 요청</strong>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <!-- 쇼핑 / 마사지 옵션 탭 (Day 2 Pavilion) -->
+            <li class="option-container">
+                <div class="option-header">
+                    <span>🔄 2일차 식후 자유시간 코스</span>
+                </div>
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('pm', 'pm-1', this)">쇼핑 & 카페타임</button>
+                    <button class="tab-btn" onclick="switchTab('pm', 'pm-2', this)">마사지 타임</button>
+                </div>
+
+                <!-- 옵션 A: 쇼핑 -->
+                <div id="pm-1" class="tab-content pm active">
+                    <div class="option-card-header">
+                        <div class="time-badge">15:00</div>
+                        <div class="place-info">
+                            <div class="place-name">파빌리온 몰 구경</div>
+                            <div class="address-box" onclick="copyToClipboard('大连柏威年')">
+                                <span class="address-text">大连柏威年</span>
+                                <button class="copy-btn">📋 복사</button>
+                            </div>
+                            <div class="transport walk" style="margin-top:8px;">🚶 도보 (식후 이동)</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
                         <div class="details-col">
                             <ul>
-                                <li>B1층: 미니소, TOP TOY, 쏭타(에그타르트), 루이싱커피(좌석O), OCE, 모어요거트</li>
+                                <li>B1층: 미니소, TOP TOY, 쏭타에그타르트, 루이싱커피(좌석O), OCE, 모어요거트</li>
                                 <li>4층: WOW뷰티, 팝마트, 루이싱커피(좌석X)</li>
-                                <li>5층: 식당 (하우스키야키 대기시간 활용)</li>
                             </ul>
                         </div>
-                    </td>
-                    <td>
-                        <div class="remark-col"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">14:30</td>
-                    <td>
-                        <strong>하우스키야키 파빌리온점</strong><br>
-                        <span class="location">贺牛寿喜烧专门店 (파빌리온 5층)</span>
-                    </td>
-                    <td><span class="badge-transport walk">🚶 도보</span></td>
-                    <td>
-                        <div class="details-col">
-                            <ul>
-                                <li>10:30~21:00 (주문마감 19:30) / 이용시간 120분</li>
-                                <li>육수: 스키야키+마라 조합 👍🏻</li>
-                                <li><span class="highlight-blue">소스:</span> 마장소스1, 파1, 다진마늘0.5, 다진고추0.5, 참기름0.5</li>
-                            </ul>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="remark-col">
-                            무한리필 <span class="highlight">인당 199위안</span> (주말, 공휴일)<br>
-                            *크림브륄레는 직원한테 직접 주문
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">16:30</td>
-                    <td>
-                        <strong>빅유마트</strong><br>
-                        <span class="location">比优特生活广场(嘉和·花样年华A座店)</span>
-                    </td>
-                    <td><span class="badge-transport">🚕 디디</span></td>
-                    <td>
-                        <div class="details-col">
-                            <ul>
-                                <li>기념품 구입</li>
-                                <li>B1층 / 09:00~21:00</li>
-                            </ul>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="remark-col">쇼핑 후 호텔 들려서 짐 놓고 오기</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">18:00</td>
-                    <td>
-                        <strong>동방수성</strong><br>
-                        <span class="location">海昌·东方水城</span>
-                    </td>
-                    <td><span class="badge-transport">🚕 디디</span></td>
-                    <td>
-                        <div class="details-col">
-                            <ul>
-                                <li>이탈리아의 베네치아st</li>
-                                <li>야경 관람</li>
-                            </ul>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="remark-col">겨울에는 얼어서 곤돌라 운영X</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">18:30</td>
-                    <td>
-                        <strong>시딩 동방수성점</strong><br>
-                        <span class="location">喜鼎海胆水饺(东港店)</span>
-                    </td>
-                    <td><span class="badge-transport walk">🚶 도보</span></td>
-                    <td>
-                        <div class="details-col">
-                            <ul>
-                                <li>금~일 10:30~21:00 / 월~목 11:00~21:00 (B.T 15:00~16:30)</li>
-                                <li><span class="highlight">대표메뉴:</span> 성게만두, 새우날치알만두, 성게오이무침 등</li>
-                                <li>배달 가능하나 시그니처인 성게만두는 <strong style="color:red">주문 불가</strong></li>
-                            </ul>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="remark-col">
-                            - 서비스비용 <span class="highlight">인당 10위안</span> (꽃차, 물티슈, 기본반찬, 후식과일)<br>
-                            - 화장실 컨디션👍🏻<br>
-                            - <strong style="color:red">직원에게 웨이팅 번호표 직접 요청</strong> (QR코드를 알리페이로 찍으면 웨이팅 순서 파악 및 메뉴 미리보기
-                            가능)
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">20:00 선택</td>
-                    <td>
-                        <strong>성해광장 (星海广场)</strong>
-                    </td>
-                    <td><span class="badge-transport">🚕 디디</span></td>
-                    <td>
-                        <div class="details-col">
-                            <ul>
-                                <li>첫날 못 갈 경우 방문</li>
-                                <li>레이저쇼: 19:30 / 20:30 / 21:30 (주말 3회)</li>
-                            </ul>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="remark-col"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">21:00</td>
-                    <td>
-                        <strong>수제맥주 바</strong><br>
-                        <span class="location">撬啤精酿酒吧(中山广场店)</span>
-                    </td>
-                    <td><span class="badge-transport">🚕 디디</span></td>
-                    <td>
-                        <div class="details-col">
-                            <ul>
-                                <li>17:00~24:00</li>
-                                <li><a href="https://m.blog.naver.com/kafca20/223892347238" target="_blank"
-                                        style="color:var(--primary)">참고 블로그 링크</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="remark-col"></div>
-                    </td>
-                </tr>
+                    </div>
+                </div>
 
-                <!-- 3일차 -->
-                <tr class="day-header day-3">
-                    <td colspan="5">🛍️ 3일차 (3/2, 월) - 카오위 그리고 귀국</td>
-                </tr>
-                <tr>
-                    <td class="time">10:00</td>
-                    <td>
-                        <strong>호텔 체크아웃</strong><br>
-                        <span class="location">노보텔 대련</span>
-                    </td>
-                    <td><span class="badge-transport walk">🚶 도보</span></td>
-                    <td>
-                        <div class="details-col">체크아웃 후 짐 보관</div>
-                    </td>
-                    <td>
-                        <div class="remark-col"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">10:30</td>
-                    <td>
-                        <strong>밍지카오위 우호광장점</strong><br>
-                        <span class="location">鸣记脆皮烤鱼(友好广场店)</span>
-                    </td>
-                    <td><span class="badge-transport">🚕 디디</span></td>
-                    <td>
+                <!-- 옵션 B: 마사지 -->
+                <div id="pm-2" class="tab-content pm">
+                    <div class="option-card-header">
+                        <div class="time-badge">15:00</div>
+                        <div class="place-info">
+                            <div class="place-name">파빌리온 주변 마사지</div>
+                            <div class="transport walk" style="margin-top:8px;">🚶 도보 / 근처 이동</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
                         <div class="details-col">
                             <ul>
-                                <li>10:00~21:30 / <span class="highlight-blue">QR 주문</span></li>
-                                <li><span class="highlight">대표메뉴:</span> 농어(perch) + 마라(왕실공물고추,매운) 마늘(약간매운,마늘)</li>
-                                <li><span class="highlight-blue">토핑:</span> 감자, 숙주, 팽이버섯, 배추, 중국당면</li>
+                                <li>식사 후 피곤하다면 쇼핑 대신 마사지샵으로 이동</li>
+                                <li>디엔핑(大众点评) 어플로 주변 가까운 마사지샵 탐색 추천</li>
                             </ul>
                         </div>
-                    </td>
-                    <td>
-                        <div class="remark-col"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">12:30</td>
-                    <td>
-                        <strong>마사지</strong>
-                    </td>
-                    <td><span class="badge-transport">🚕 디디</span></td>
-                    <td>
-                        <div class="details-col">마사지 휴식</div>
-                    </td>
-                    <td>
-                        <div class="remark-col"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">15:00</td>
-                    <td>
-                        <strong>따띠춘빙 (동북로점)</strong><br>
-                        <span class="location">大地春饼 (东北路店)</span>
-                    </td>
-                    <td><span class="badge-transport">🚕 디디</span></td>
-                    <td>
-                        <div class="details-col">
-                            <ul>
-                                <li>10:00~20:30</li>
-                                <li><span class="highlight">대표메뉴:</span> 춘빙, 경장육사, 어향육슬(위샹로스), 마라새우, 숙주볶음, 꿔바로우, 가지튀김 등
-                                </li>
-                            </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge">16:30</div>
+                    <div class="place-info">
+                        <div class="place-name">빅유마트</div>
+                        <div class="address-box" onclick="copyToClipboard('比优特生活广场(花样年华店)')">
+                            <span class="address-text">比优特生活广场(花样年华店)</span>
+                            <button class="copy-btn">📋 복사</button>
                         </div>
-                    </td>
-                    <td>
-                        <div class="remark-col">
-                            - 식기 <span class="highlight">인당 1위안</span> 추가<br>
-                            - <strong style="color:red">QR주문 X</strong>
+                        <div class="transport didi" style="margin-top:8px;">🚕 디디</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">
+                        <ul>
+                            <li>B1층 / 09:00~21:00</li>
+                            <li>기념품 구입</li>
+                        </ul>
+                    </div>
+                    <div class="remark-box">
+                        <span class="remark-icon">💼</span>
+                        <div class="remark-content">쇼핑 후 호텔 들려서 짐 놓고 이동</div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge">18:00</div>
+                    <div class="place-info">
+                        <div class="place-name">동방수성</div>
+                        <div class="address-box" onclick="copyToClipboard('海昌·东方水城')">
+                            <span class="address-text">海昌·东方水城</span>
+                            <button class="copy-btn">📋 복사</button>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">16:30</td>
-                    <td>
-                        <strong>호텔 짐 픽업 및 공항 이동</strong><br>
-                        <span class="location">大连机场 (대련공항)</span>
-                    </td>
-                    <td><span class="badge-transport">🚕 디디 (40분)</span></td>
-                    <td>
-                        <div class="details-col">호텔에서 짐 찾아서 공항 출발</div>
-                    </td>
-                    <td>
-                        <div class="remark-col"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="time">19:20</td>
-                    <td>
-                        <strong>대련 ✈️ 인천</strong><br>
-                        <span class="location">대련공항 -> 인천공항</span>
-                    </td>
-                    <td><span class="badge-transport flight">✈️ 비행기 (1h20m)</span></td>
-                    <td>
-                        <div class="details-col">
-                            대련 19:20 -> 인천 21:40
+                        <div class="transport didi" style="margin-top:8px;">🚕 디디</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">
+                        <ul>
+                            <li>이탈리아 베네치아 스타일</li>
+                            <li>야경 관람</li>
+                        </ul>
+                    </div>
+                    <div class="remark-box">
+                        <span class="remark-icon">❄️</span>
+                        <div class="remark-content">겨울에는 얼어서 곤돌라 운영X</div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge">18:30</div>
+                    <div class="place-info">
+                        <div class="place-name">시딩 동방수성점</div>
+                        <div class="address-box" onclick="copyToClipboard('喜鼎海胆水饺(东港店)')">
+                            <span class="address-text">喜鼎海胆水饺(东港店)</span>
+                            <button class="copy-btn">📋 복사</button>
                         </div>
-                    </td>
-                    <td>
-                        <div class="remark-col">수고하셨습니다 👏</div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        <div class="transport walk" style="margin-top:8px;">🚶 도보</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">
+                        <ul>
+                            <li>금~일 10:30~21:00 / 월~목 11:00~21:00 (B.T 15:00~16:30)</li>
+                            <li>배달 가능 (성게만두는 주문 불가)</li>
+                            <li><strong class="highlight-blue">대표메뉴:</strong> 성게만두, 새우날치알만두, 성게오이무침 등</li>
+                            <li>화장실 컨디션 쾌적 👍🏻</li>
+                        </ul>
+                    </div>
+                    <div class="remark-box">
+                        <span class="remark-icon">⚠️</span>
+                        <div class="remark-content">
+                            - 서비스비용 <strong class="highlight">인당 10위안</strong> (차, 물티슈 등)<br>
+                            - <strong class="highlight">직원에게 웨이팅 번호표 직접 요청</strong><br>
+                            - 번호표 QR 알리페이 스캔 시 순서/메뉴 확인 가능
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge"><span
+                            style="font-size:0.7em;color:var(--gray-600);display:block;margin-bottom:-4px;">선택</span>20:00
+                    </div>
+                    <div class="place-info">
+                        <div class="place-name">성해광장</div>
+                        <div class="address-box" onclick="copyToClipboard('星海广场')">
+                            <span class="address-text">星海广场</span>
+                            <button class="copy-btn">📋 복사</button>
+                        </div>
+                        <div class="transport didi" style="margin-top:8px;">🚕 디디</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">
+                        <ul>
+                            <li>첫날 못 갈 경우 방문</li>
+                            <li>레이저쇼: 19:30 / 20:30 / 21:30 (주말3회)</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge">21:00</div>
+                    <div class="place-info">
+                        <div class="place-name">수제맥주 바</div>
+                        <div class="address-box" onclick="copyToClipboard('撬啤精酿酒吧(中山广场店)')">
+                            <span class="address-text">撬啤精酿酒吧(中山广场店)</span>
+                            <button class="copy-btn">📋 복사</button>
+                        </div>
+                        <div class="transport didi" style="margin-top:8px;">🚕 디디</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">
+                        <ul>
+                            <li>17:00~24:00</li>
+                            <li><a href="https://m.blog.naver.com/kafca20/223892347238" target="_blank"
+                                    style="color:var(--primary); font-weight:700;">추천 블로그 보기</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <!-- 3일차 -->
+            <li class="day-header">🛍️ Day 3 (3/2, 월)</li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge">10:00</div>
+                    <div class="place-info">
+                        <div class="place-name">호텔 체크아웃</div>
+                        <div class="transport walk" style="margin-top:4px;">🚶 도보</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">체크아웃 후 짐 보관</div>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge">10:30</div>
+                    <div class="place-info">
+                        <div class="place-name">밍지카오위 우호광장점</div>
+                        <div class="address-box" onclick="copyToClipboard('鸣记脆皮烤鱼(友好广场店)')">
+                            <span class="address-text">鸣记脆皮烤鱼(友好广场店)</span>
+                            <button class="copy-btn">📋 복사</button>
+                        </div>
+                        <div class="transport didi" style="margin-top:8px;">🚕 디디</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">
+                        <ul>
+                            <li>10:00~21:30 / <strong class="highlight-blue">QR 주문</strong></li>
+                            <li><strong class="highlight-blue">대표메뉴:</strong> 농어(perch) + 마라(완실공물,매운) 마늘(약간매운,마늘)</li>
+                            <li><strong class="highlight-blue">토핑:</strong> 감자, 숙주, 팽이버섯, 배추, 중국당면</li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <!-- 마사지 옵션 안내 (Day 3에서 통합 안내) -->
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge"><span
+                            style="font-size:0.7em;color:var(--gray-600);display:block;margin-bottom:-4px;">유동적</span>12:30
+                    </div>
+                    <div class="place-info">
+                        <div class="place-name">마사지 타임 💆</div>
+                        <div class="transport didi" style="margin-top:4px;">🚕 디디 / 근처 이동</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="remark-box" style="background:#FFF0B3; border-color:#FFAB00; margin-top:0;">
+                        <span class="remark-icon">🌿</span>
+                        <div class="remark-content">
+                            <strong>일정에 따라 2일차(파빌리온 몰 구경 직후) 또는 지금(3일차) 진행!</strong><br>
+                            예약 상황 및 피로도에 따라 유동적으로 선택하시면 됩니다.
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge">15:00</div>
+                    <div class="place-info">
+                        <div class="place-name">따띠춘빙 (동북로점)</div>
+                        <div class="address-box" onclick="copyToClipboard('大地春饼(东北路店)')">
+                            <span class="address-text">大地春饼(东北路店)</span>
+                            <button class="copy-btn">📋 복사</button>
+                        </div>
+                        <div class="transport didi" style="margin-top:8px;">🚕 디디</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">
+                        <ul>
+                            <li>10:00~20:30</li>
+                            <li><strong class="highlight-blue">대표메뉴:</strong> 춘빙, 경장육사, 어향육슬(위샹로스), 마라새우, 꿔바로우, 숙주볶음 등
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="remark-box">
+                        <span class="remark-icon">⚠️</span>
+                        <div class="remark-content">
+                            - 식기 <strong class="highlight">인당 1위안</strong> 추가<br>
+                            - <strong class="highlight">QR주문 X</strong> (직접 주문)
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge">16:30</div>
+                    <div class="place-info">
+                        <div class="place-name">호텔 짐 픽업 및 공항 이동</div>
+                        <div class="address-box" onclick="copyToClipboard('大连周水子国际机场')">
+                            <span class="address-text">大连周水子国际机场</span>
+                            <button class="copy-btn">📋 복사</button>
+                        </div>
+                        <div class="transport didi" style="margin-top:8px;">🚕 디디 (40분)</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">호텔에서 짐 찾아서 공항 출발</div>
+                </div>
+            </li>
+
+            <li class="timeline-item">
+                <div class="card-header">
+                    <div class="time-badge">19:20</div>
+                    <div class="place-info">
+                        <div class="place-name">대련 ✈️ 인천</div>
+                        <div class="transport flight" style="margin-top:4px;">✈️ 비행기</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="details-col">대련 19:20 -> 인천 21:40</div>
+                    <div class="remark-box"
+                        style="background:#E9F2FF; border-left-color:#0052CC; color:#0052CC; font-weight:700;">
+                        <span class="remark-icon">👏</span>
+                        <div class="remark-content">수고하셨습니다</div>
+                    </div>
+                </div>
+            </li>
+        </ul>
     </div>
+
+    <!-- 터치 친화적 노션 플로팅 버튼 -->
+    <a href="https://www.notion.so/Dalian-20260228-2e71276b033e80e293d1c90878c79488" target="_blank"
+        class="floating-notion">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png" alt="Notion"
+            class="notion-icon">
+        예약 정보 보기
+    </a>
+
+    <!-- 토스트 알림 -->
+    <div id="toast">✅ 주소가 복사되었습니다.</div>
+
+    <script>
+        function copyToClipboard(text) {
+            // 버튼 자체뿐만 아니라 address-box 전체 터치 시 복사 처리
+            navigator.clipboard.writeText(text).then(function () {
+                var toast = document.getElementById("toast");
+                toast.className = "show";
+
+                // 디바이스 진동 피드백 (모바일 전용)
+                if (navigator.vibrate) {
+                    navigator.vibrate(50);
+                }
+
+                setTimeout(function () { toast.className = toast.className.replace("show", ""); }, 2000);
+            }, function (err) {
+                console.error('복사 실패: ', err);
+                alert('복사에 실패했습니다. 직접 텍스트를 선택해 복사해주세요.');
+            });
+        }
+
+        // 탭 스위치 로직
+        function switchTab(groupClass, targetId, btnElement) {
+            // 해당 탭 그룹의 모든 탭 버튼 비활성화
+            const buttons = btnElement.parentElement.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // 해당 그룹의 모든 컨텐츠 숨김
+            const contents = document.querySelectorAll('.tab-content.' + groupClass);
+            contents.forEach(content => content.classList.remove('active'));
+
+            // 클릭된 버튼 활성화
+            btnElement.classList.add('active');
+
+            // 타겟 컨텐츠 노출
+            const targetContent = document.getElementById(targetId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        }
+    </script>
 </body>
 
 </html>
