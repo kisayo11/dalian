@@ -32,7 +32,8 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
+            /* 넓이 확장 */
             width: 100%;
             background: white;
             border-radius: 20px;
@@ -92,7 +93,8 @@
             padding: 16px 18px;
             text-align: left;
             border-bottom: 1px solid var(--gray-200);
-            vertical-align: middle;
+            vertical-align: top;
+            /* 텍스트 상단 정렬 */
         }
 
         th {
@@ -101,6 +103,7 @@
             font-weight: 700;
             font-size: 0.95em;
             letter-spacing: 0.05em;
+            text-align: center;
         }
 
         tbody tr:last-child td {
@@ -121,6 +124,9 @@
             font-weight: 700;
             font-size: 1.1em;
             letter-spacing: 0.02em;
+            text-align: left;
+            /* 요일 헤더는 좌측 정렬 */
+            vertical-align: middle;
         }
 
         .day-1 td {
@@ -140,6 +146,7 @@
             color: var(--primary);
             font-size: 1.05em;
             white-space: nowrap;
+            text-align: center;
         }
 
         .day-header.day-2~tr .time {
@@ -164,6 +171,7 @@
         .badge-transport {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 4px;
             font-size: 0.85em;
             background-color: #fff3cd;
@@ -184,23 +192,33 @@
             color: #0c5460;
         }
 
-        /* 비고 스타일링 추가 */
-        .remark-note {
+        /* 세부내용 스타일링 */
+        .details-col {
             font-size: 0.9em;
             color: var(--gray-800);
             line-height: 1.5;
-            display: inline-block;
         }
 
-        .remark-note ul {
+        .details-col ul {
             margin: 4px 0 0 0;
             padding-left: 18px;
             color: var(--gray-600);
             font-size: 0.95em;
         }
 
-        .remark-note li {
-            margin-bottom: 2px;
+        .details-col li {
+            margin-bottom: 3px;
+        }
+
+        /* 비고 스타일링 */
+        .remark-col {
+            font-size: 0.85em;
+            color: var(--gray-600);
+            background-color: #fff8e1;
+            /* 연한 노란색 배경으로 구분감 주기 */
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid #ffc107;
         }
 
         .highlight {
@@ -213,7 +231,34 @@
             font-weight: 700;
         }
 
-        @media (max-width: 768px) {
+        /* 테이블 열 너비 비율 조정 */
+        th:nth-child(1) {
+            width: 10%;
+        }
+
+        /* 시간 */
+        th:nth-child(2) {
+            width: 22%;
+        }
+
+        /* 일정 */
+        th:nth-child(3) {
+            width: 12%;
+        }
+
+        /* 이동 */
+        th:nth-child(4) {
+            width: 36%;
+        }
+
+        /* 세부내용 */
+        th:nth-child(5) {
+            width: 20%;
+        }
+
+        /* 비고 */
+
+        @media (max-width: 900px) {
             body {
                 padding: 10px;
             }
@@ -224,26 +269,12 @@
 
             th,
             td {
-                padding: 12px 10px;
+                padding: 10px 8px;
                 font-size: 0.9em;
-            }
-
-            .location {
-                display: block;
-                margin-top: 6px;
             }
 
             h2 {
                 font-size: 1.6em;
-            }
-
-            .meta-item {
-                padding: 6px 12px;
-                font-size: 0.85em;
-            }
-
-            .time {
-                font-size: 0.95em;
             }
 
             table {
@@ -252,7 +283,11 @@
                 white-space: nowrap;
             }
 
-            .remark-note ul {
+            .details-col ul {
+                white-space: normal;
+            }
+
+            .remark-col {
                 white-space: normal;
             }
         }
@@ -262,7 +297,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h2>🇨🇳 대련 2박 3일 팀 빌딩 일정</h2>
+            <h2>🇨🇳 대련 2박 3일 일정</h2>
             <div class="meta-info">
                 <div class="meta-item">🏨 <span><strong>숙소:</strong> 노보텔 대련 중산 (大连中山广场诺富特酒店)</span></div>
                 <div class="meta-item">🗓️ <span><strong>기간:</strong> 2026.02.28(토) - 03.02(월)</span></div>
@@ -272,25 +307,29 @@
         <table>
             <thead>
                 <tr>
-                    <th style="width: 12%;">시간</th>
-                    <th style="width: 25%;">일정 및 장소</th>
-                    <th style="width: 15%;">이동 정보</th>
-                    <th style="width: 48%;">비고 (특이사항 및 메뉴)</th>
+                    <th>시간</th>
+                    <th>일정 및 장소</th>
+                    <th>이동 정보</th>
+                    <th>세부 내용</th>
+                    <th>비고 (특이사항)</th>
                 </tr>
             </thead>
             <tbody>
                 <!-- 1일차 -->
                 <tr class="day-header day-1">
-                    <td colspan="4">✈️ 1일차 (2/28, 토) - 출국 및 로컬 탐방</td>
+                    <td colspan="5">✈️ 1일차 (2/28, 토) - 출국 및 로컬 탐방</td>
                 </tr>
                 <tr>
                     <td class="time">12:00</td>
                     <td>
                         <strong>천호역 공영주차장</strong>
                     </td>
-                    <td><span class="badge-transport walk">🚗 자차/대중교통</span></td>
+                    <td><span class="badge-transport walk">🚗 자차/대중</span></td>
                     <td>
-                        <div class="remark-note">출국을 위한 집결 및 공항으로 이동</div>
+                        <div class="details-col">출국을 위한 집결</div>
+                    </td>
+                    <td>
+                        <div class="remark-col"></div>
                     </td>
                 </tr>
                 <tr>
@@ -299,37 +338,46 @@
                         <strong>인천 ✈️ 대련</strong><br>
                         <span class="location">대련공항 (大连周水子国际机场)</span>
                     </td>
-                    <td><span class="badge-transport flight">✈️ 비행기 (1h20m)</span></td>
+                    <td><span class="badge-transport flight">✈️ 비행기</span></td>
                     <td>
-                        <div class="remark-note">대련 현지 도착 예상 시간: <span class="highlight-blue">17:50</span> (시차 -1시간)
+                        <div class="details-col">
+                            인천 17:30 -> 대련 17:50 (1시간 20분)
+                        </div>
+                    </td>
+                    <td>
+                        <div class="remark-col">대련 현지 도착 예상 시간: <br><span class="highlight-blue">17:50</span> (시차 -1시간)
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td class="time">18:30 (예상)</td>
+                    <td class="time">18:30 예상</td>
                     <td>
-                        <strong>호텔로 이동 후 체크인</strong><br>
+                        <strong>호텔 체크인</strong><br>
                         <span class="location">노보텔 (大连中山广场诺富特酒店)</span>
                     </td>
-                    <td><span class="badge-transport">� 디디 (30분)</span></td>
+                    <td><span class="badge-transport">🚕 디디 (30분)</span></td>
                     <td>
-                        <div class="remark-note">공항에서 호텔로 택시(디디) 이동 후 숙소 짐 풀기</div>
+                        <div class="details-col">대련공항 -> 노보텔 이동 및 체크인</div>
+                    </td>
+                    <td>
+                        <div class="remark-col"></div>
                     </td>
                 </tr>
                 <tr>
-                    <td class="time">19:30 (선택)</td>
+                    <td class="time">19:30 선택</td>
                     <td>
-                        <strong>성해광장 (星海广场)</strong><br>
-                        <span class="location">시간/날씨 허락 시 방문</span>
+                        <strong>성해광장 (星海广场)</strong>
                     </td>
                     <td><span class="badge-transport">🚕 디디</span></td>
                     <td>
-                        <div class="remark-note">
+                        <div class="details-col">
                             <ul>
-                                <li>레이저쇼: 19:30 / 20:30 / 21:30</li>
-                                <li>평일 2회, 주말 3회 운영</li>
+                                <li>레이저쇼: 19:30 / 20:30 / 21:30 (평일2회, 주말3회)</li>
                             </ul>
                         </div>
+                    </td>
+                    <td>
+                        <div class="remark-col">시간과 날씨가 괜찮을 경우 방문</div>
                     </td>
                 </tr>
                 <tr>
@@ -338,38 +386,47 @@
                         <strong>서안로 야시장</strong><br>
                         <span class="location">西安路夜市 (中央大道吾悦广场店/长兴里)</span>
                     </td>
-                    <td><span class="badge-transport">� 디디</span></td>
+                    <td><span class="badge-transport">🚕 디디</span></td>
                     <td>
-                        <div class="remark-note">
-                            지하 1층 실내 (10:00~22:30). 주변 빅유마트/헤이티/패왕차희 입점
+                        <div class="details-col">
                             <ul>
+                                <li>지하1층 실내 / 10:00 ~ 22:30</li>
+                                <li>같은 건물에 빅유마트, 헤이티, 패왕차희 있음</li>
                                 <li><span class="highlight">대표메뉴:</span> 냉면구이, 셩지엔(구운만두), 먼즈, 보보지, 꿔바로우, 소시지구이, 꿀고구마 등
                                 </li>
                             </ul>
                         </div>
                     </td>
+                    <td>
+                        <div class="remark-col">현금 결제 필요 여부 확인</div>
+                    </td>
                 </tr>
                 <tr>
                     <td class="time">22:30</td>
                     <td>
-                        <strong>천호천 (천후촨)</strong><br>
-                        <span class="location">春和楼 (호텔 1층)</span>
+                        <strong>천후촨</strong><br>
+                        <span class="location">호텔 1층</span>
                     </td>
                     <td><span class="badge-transport walk">🚶 도보</span></td>
                     <td>
-                        <div class="remark-note">
-                            운영: 11:00~02:00. 식기 <span class="highlight">인당 4위안</span> 추가
+                        <div class="details-col">
                             <ul>
-                                <li><span class="highlight">주문 방식:</span> QR 주문 X (주방 앞 서있는 직원에게 직접 주문)</li>
+                                <li>영업시간: 11:00 ~ 02:00</li>
                                 <li><span class="highlight">대표메뉴:</span> 해산물덮밥, 굴구이, 양꼬치, 부추구이 등</li>
                             </ul>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="remark-col">
+                            - 식기 <span class="highlight">인당 4위안</span> 추가<br>
+                            - <strong style="color:red">QR주문X</strong>, 주방 앞 서있는 직원에게 직접 주문
                         </div>
                     </td>
                 </tr>
 
                 <!-- 2일차 -->
                 <tr class="day-header day-2">
-                    <td colspan="4">🍱 2일차 (3/1, 일) - 미식 및 야경 명소 탐방</td>
+                    <td colspan="5">🍱 2일차 (3/1, 일) - 북경오리 및 훠궈 무한리필</td>
                 </tr>
                 <tr>
                     <td class="time">10:00</td>
@@ -379,7 +436,14 @@
                     </td>
                     <td><span class="badge-transport">🚕 디디</span></td>
                     <td>
-                        <div class="remark-note">아침 식사 (정통 베이징덕 전문점)</div>
+                        <div class="details-col">
+                            <ul>
+                                <li>베이징덕</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="remark-col"></div>
                     </td>
                 </tr>
                 <tr>
@@ -388,113 +452,166 @@
                         <strong>동관지에 (东关街)</strong><br>
                         <span class="location">东关街历史文化街区</span>
                     </td>
-                    <td><span class="badge-transport">� 디디/도보</span></td>
+                    <td><span class="badge-transport">🚕 디디</span></td>
                     <td>
-                        <div class="remark-note">블랜버니티(차), 소품샵, 예쁜 카페 등 역사문화거리 탐방</div>
+                        <div class="details-col">
+                            <ul>
+                                <li>대표: 블랜버니티, 소품샵, 카페 등</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="remark-col"></div>
                     </td>
                 </tr>
                 <tr>
                     <td class="time">13:00</td>
                     <td>
-                        <strong>파빌리온 몰 & 빅유마트</strong><br>
-                        <span class="location">柏威年 & 比优特生活广场</span>
+                        <strong>파빌리온 몰</strong><br>
+                        <span class="location">柏威年</span>
                     </td>
                     <td><span class="badge-transport">🚕 디디</span></td>
                     <td>
-                        <div class="remark-note">
-                            모아서 보는 대규모 쇼핑타임
+                        <div class="details-col">
                             <ul>
-                                <li>B1층: 미니소, TOP TOY, 쏭타(에그타르트), 루이싱커피, 모어요거트</li>
-                                <li>B1층: 빅유마트(기념품 등 마트 쇼핑, 09:00~21:00)</li>
-                                <li>4층: WOW뷰티, 팝마트 등</li>
+                                <li>B1층: 미니소, TOP TOY, 쏭타(에그타르트), 루이싱커피(좌석O), OCE, 모어요거트</li>
+                                <li>4층: WOW뷰티, 팝마트, 루이싱커피(좌석X)</li>
+                                <li>5층: 식당 (하우스키야키 대기시간 활용)</li>
                             </ul>
                         </div>
+                    </td>
+                    <td>
+                        <div class="remark-col"></div>
                     </td>
                 </tr>
                 <tr>
                     <td class="time">14:30</td>
                     <td>
-                        <strong>하우스키야키 (파빌리온점)</strong><br>
+                        <strong>하우스키야키 파빌리온점</strong><br>
                         <span class="location">贺牛寿喜烧专门店 (파빌리온 5층)</span>
                     </td>
-                    <td><span class="badge-transport walk">� 도보</span></td>
+                    <td><span class="badge-transport walk">🚶 도보</span></td>
                     <td>
-                        <div class="remark-note">
-                            무한리필 <span class="highlight">인당 199위안</span> (주말/공휴일). 120분 이용
+                        <div class="details-col">
                             <ul>
-                                <li>주문마감 19:30. 육수: 스키야키+마라 조합 👍🏻</li>
-                                <li><span class="highlight-blue">추천소스:</span> 마장소스1, 파1, 다진마늘0.5, 다진고추0.5, 참기름0.5</li>
-                                <li>크림브륄레는 직원에게 직접 주문</li>
+                                <li>10:30~21:00 (주문마감 19:30) / 이용시간 120분</li>
+                                <li>육수: 스키야키+마라 조합 👍🏻</li>
+                                <li><span class="highlight-blue">소스:</span> 마장소스1, 파1, 다진마늘0.5, 다진고추0.5, 참기름0.5</li>
                             </ul>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="remark-col">
+                            무한리필 <span class="highlight">인당 199위안</span> (주말, 공휴일)<br>
+                            *크림브륄레는 직원한테 직접 주문
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td class="time">16:30</td>
                     <td>
-                        <strong>호텔 복귀 및 짐 보관</strong><br>
-                        <span class="location">노보텔 대련</span>
+                        <strong>빅유마트</strong><br>
+                        <span class="location">比优特生活广场(嘉和·花样年华A座店)</span>
                     </td>
-                    <td><span class="badge-transport">� 디디</span></td>
+                    <td><span class="badge-transport">🚕 디디</span></td>
                     <td>
-                        <div class="remark-note">쇼핑한 짐(기념품 등) 호텔에 두고 가볍게 이동</div>
+                        <div class="details-col">
+                            <ul>
+                                <li>기념품 구입</li>
+                                <li>B1층 / 09:00~21:00</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="remark-col">쇼핑 후 호텔 들려서 짐 놓고 오기</div>
                     </td>
                 </tr>
                 <tr>
-                    <td class="time">17:30</td>
+                    <td class="time">18:00</td>
                     <td>
-                        <strong>동방수성 (베네치아 수성)</strong><br>
+                        <strong>동방수성</strong><br>
                         <span class="location">海昌·东方水城</span>
                     </td>
                     <td><span class="badge-transport">🚕 디디</span></td>
                     <td>
-                        <div class="remark-note">이탈리아 베네치아 스타일. 겨울에는 얼어서 곤돌라 운영 X (야경 위주 감상)</div>
+                        <div class="details-col">
+                            <ul>
+                                <li>이탈리아의 베네치아st</li>
+                                <li>야경 관람</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="remark-col">겨울에는 얼어서 곤돌라 운영X</div>
                     </td>
                 </tr>
                 <tr>
                     <td class="time">18:30</td>
                     <td>
-                        <strong>시딩 (동방수성점)</strong><br>
+                        <strong>시딩 동방수성점</strong><br>
                         <span class="location">喜鼎海胆水饺(东港店)</span>
                     </td>
-                    <td><span class="badge-transport walk">� 도보</span></td>
+                    <td><span class="badge-transport walk">🚶 도보</span></td>
                     <td>
-                        <div class="remark-note">
-                            서비스비 <span class="highlight">인당 10위안</span> (꽃차, 물티슈, 기본반찬, 후식과일 제공)
+                        <div class="details-col">
                             <ul>
-                                <li>직원에게 웨이팅 번호표 직접 요청 (QR로 순서 및 메뉴 미리보기 가능)</li>
-                                <li>대표메뉴 성게만두는 배달 주문 불가. 반드시 매장에서 식사</li>
+                                <li>금~일 10:30~21:00 / 월~목 11:00~21:00 (B.T 15:00~16:30)</li>
                                 <li><span class="highlight">대표메뉴:</span> 성게만두, 새우날치알만두, 성게오이무침 등</li>
+                                <li>배달 가능하나 시그니처인 성게만두는 <strong style="color:red">주문 불가</strong></li>
                             </ul>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="remark-col">
+                            - 서비스비용 <span class="highlight">인당 10위안</span> (꽃차, 물티슈, 기본반찬, 후식과일)<br>
+                            - 화장실 컨디션👍🏻<br>
+                            - <strong style="color:red">직원에게 웨이팅 번호표 직접 요청</strong> (QR코드를 알리페이로 찍으면 웨이팅 순서 파악 및 메뉴 미리보기
+                            가능)
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td class="time">20:00 (선택)</td>
+                    <td class="time">20:00 선택</td>
                     <td>
-                        <strong>성해광장 (星海广场)</strong><br>
-                        <span class="location">1일차에 못 갔을 경우 방문</span>
+                        <strong>성해광장 (星海广场)</strong>
                     </td>
-                    <td><span class="badge-transport">� 디디</span></td>
+                    <td><span class="badge-transport">🚕 디디</span></td>
                     <td>
-                        <div class="remark-note">레이저쇼 관람 (19:30 / 20:30 / 21:30) (주말 3회 운영)</div>
+                        <div class="details-col">
+                            <ul>
+                                <li>첫날 못 갈 경우 방문</li>
+                                <li>레이저쇼: 19:30 / 20:30 / 21:30 (주말 3회)</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="remark-col"></div>
                     </td>
                 </tr>
                 <tr>
                     <td class="time">21:00</td>
                     <td>
                         <strong>수제맥주 바</strong><br>
-                        <span class="location">撬啤精酿酒吧 (中山广场店)</span>
+                        <span class="location">撬啤精酿酒吧(中山广场店)</span>
                     </td>
-                    <td><span class="badge-transport">🚕 디디/도보</span></td>
+                    <td><span class="badge-transport">🚕 디디</span></td>
                     <td>
-                        <div class="remark-note">영업시간: 17:00 ~ 24:00. 가벼운 맥주와 함께 일정 마무리</div>
+                        <div class="details-col">
+                            <ul>
+                                <li>17:00~24:00</li>
+                                <li><a href="https://m.blog.naver.com/kafca20/223892347238" target="_blank"
+                                        style="color:var(--primary)">참고 블로그 링크</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="remark-col"></div>
                     </td>
                 </tr>
 
                 <!-- 3일차 -->
                 <tr class="day-header day-3">
-                    <td colspan="4">🛍️ 3일차 (3/2, 월) - 식도락 및 귀국</td>
+                    <td colspan="5">🛍️ 3일차 (3/2, 월) - 카오위 그리고 귀국</td>
                 </tr>
                 <tr>
                     <td class="time">10:00</td>
@@ -502,37 +619,45 @@
                         <strong>호텔 체크아웃</strong><br>
                         <span class="location">노보텔 대련</span>
                     </td>
-                    <td><span class="badge-transport walk">� 도보</span></td>
+                    <td><span class="badge-transport walk">🚶 도보</span></td>
                     <td>
-                        <div class="remark-note">체크아웃 후 로비에 짐 보관</div>
+                        <div class="details-col">체크아웃 후 짐 보관</div>
+                    </td>
+                    <td>
+                        <div class="remark-col"></div>
                     </td>
                 </tr>
                 <tr>
                     <td class="time">10:30</td>
                     <td>
-                        <strong>밍지카오위 (우호광장점)</strong><br>
+                        <strong>밍지카오위 우호광장점</strong><br>
                         <span class="location">鸣记脆皮烤鱼(友好广场店)</span>
                     </td>
-                    <td><span class="badge-transport">� 디디</span></td>
+                    <td><span class="badge-transport">🚕 디디</span></td>
                     <td>
-                        <div class="remark-note">
-                            영업 10:00~21:30 (QR 주문 방식)
+                        <div class="details-col">
                             <ul>
-                                <li><span class="highlight">주문조합:</span> 농어(perch) + 마라(왕실공물고추)/마늘(약간매운)</li>
-                                <li><span class="highlight-blue">추천토핑:</span> 감자, 숙주, 팽이버섯, 배추, 중국당면</li>
+                                <li>10:00~21:30 / <span class="highlight-blue">QR 주문</span></li>
+                                <li><span class="highlight">대표메뉴:</span> 농어(perch) + 마라(왕실공물고추,매운) 마늘(약간매운,마늘)</li>
+                                <li><span class="highlight-blue">토핑:</span> 감자, 숙주, 팽이버섯, 배추, 중국당면</li>
                             </ul>
                         </div>
+                    </td>
+                    <td>
+                        <div class="remark-col"></div>
                     </td>
                 </tr>
                 <tr>
                     <td class="time">12:30</td>
                     <td>
-                        <strong>전신 마사지</strong><br>
-                        <span class="location">📍 시내 샵</span>
+                        <strong>마사지</strong>
                     </td>
-                    <td><span class="badge-transport">� 디디</span></td>
+                    <td><span class="badge-transport">🚕 디디</span></td>
                     <td>
-                        <div class="remark-note">귀국 전 피로를 풀어주는 힐링 타임 (기존 일정 융합)</div>
+                        <div class="details-col">마사지 휴식</div>
+                    </td>
+                    <td>
+                        <div class="remark-col"></div>
                     </td>
                 </tr>
                 <tr>
@@ -543,12 +668,18 @@
                     </td>
                     <td><span class="badge-transport">🚕 디디</span></td>
                     <td>
-                        <div class="remark-note">
-                            식기 <span class="highlight">인당 1위안</span> 추가. (QR주문 X, 직원 직접 주문)
+                        <div class="details-col">
                             <ul>
-                                <li><span class="highlight-blue">대표메뉴:</span> 춘빙, 경장육사, 어향육슬, 마라새우, 숙주볶음, 꿔바로우, 가지튀김 등
+                                <li>10:00~20:30</li>
+                                <li><span class="highlight">대표메뉴:</span> 춘빙, 경장육사, 어향육슬(위샹로스), 마라새우, 숙주볶음, 꿔바로우, 가지튀김 등
                                 </li>
                             </ul>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="remark-col">
+                            - 식기 <span class="highlight">인당 1위안</span> 추가<br>
+                            - <strong style="color:red">QR주문 X</strong>
                         </div>
                     </td>
                 </tr>
@@ -558,21 +689,28 @@
                         <strong>호텔 짐 픽업 및 공항 이동</strong><br>
                         <span class="location">大连机场 (대련공항)</span>
                     </td>
-                    <td><span class="badge-transport">� 디디 (40분)</span></td>
+                    <td><span class="badge-transport">🚕 디디 (40분)</span></td>
                     <td>
-                        <div class="remark-note">호텔에 보관한 짐 챙겨서 공항으로 신속 이동</div>
+                        <div class="details-col">호텔에서 짐 찾아서 공항 출발</div>
+                    </td>
+                    <td>
+                        <div class="remark-col"></div>
                     </td>
                 </tr>
                 <tr>
                     <td class="time">19:20</td>
                     <td>
                         <strong>대련 ✈️ 인천</strong><br>
-                        <span class="location">대련 출발 -> 인천 착</span>
+                        <span class="location">대련공항 -> 인천공항</span>
                     </td>
                     <td><span class="badge-transport flight">✈️ 비행기 (1h20m)</span></td>
                     <td>
-                        <div class="remark-note">대련 <span class="highlight-blue">19:20</span> 출발 -> 인천 <span
-                                class="highlight-blue">21:40</span> 도착. 수고하셨습니다!</div>
+                        <div class="details-col">
+                            대련 19:20 -> 인천 21:40
+                        </div>
+                    </td>
+                    <td>
+                        <div class="remark-col">수고하셨습니다 👏</div>
                     </td>
                 </tr>
             </tbody>
