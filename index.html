@@ -47,7 +47,7 @@
 
         .header {
             background-color: white;
-            padding: 24px 20px;
+            padding: 16px 20px;
             border-bottom: 1px solid var(--gray-200);
             position: sticky;
             top: 0;
@@ -55,9 +55,9 @@
         }
 
         h2 {
-            font-size: 1.5em;
+            font-size: 1.35em;
             font-weight: 800;
-            margin: 0 0 12px 0;
+            margin: 0 0 8px 0;
             color: var(--dark);
             text-align: left;
         }
@@ -65,8 +65,8 @@
         .meta-info {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            font-size: 0.9em;
+            gap: 4px;
+            font-size: 0.85em;
             color: var(--gray-600);
         }
 
@@ -78,7 +78,7 @@
             font-size: 1.1em;
             padding: 12px 20px;
             position: sticky;
-            top: 96px;
+            top: 82px;
             /* 헤더 아래 위치 */
             z-index: 90;
             display: flex;
@@ -285,33 +285,34 @@
             font-weight: 700;
         }
 
-        /* 모바일 하단 고정 노션 버튼 (Safe Area 대응) */
+        /* 모바일 우측 하단 고정 노션 아이콘 버튼 */
         .floating-notion {
             position: fixed;
             bottom: max(20px, env(safe-area-inset-bottom));
-            left: 50%;
-            transform: translateX(-50%);
+            right: 20px;
+            left: auto;
+            transform: none;
             background-color: white;
-            color: var(--dark);
-            padding: 14px 24px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 1em;
-            text-decoration: none;
+            padding: 0;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             border: 1px solid var(--gray-200);
-            width: calc(100% - 40px);
-            max-width: 360px;
+            width: 54px;
+            height: 54px;
             z-index: 1000;
+            transition: transform 0.2s;
+        }
+
+        .floating-notion:active {
+            transform: scale(0.95);
         }
 
         .notion-icon {
-            width: 20px;
-            height: 20px;
+            width: 26px;
+            height: 26px;
         }
 
 
@@ -1023,7 +1024,7 @@
                     <div class="card-body">
                         <div class="details-col">
                             <ul>
-                                <li>오리구이(점심) ➡️ 연화산 ➡️ 따띠춘빙(저녁) 동선 🚗</li>
+                                <li>밍지카오위(아점) ➡️ 연화산전망대 ➡️ 따띠춘빙(일저) 동선 🚗</li>
                                 <li>대련 앞바다와 성해대교가 한눈에 보이는 탁 트인 핫플 명소!</li>
                                 <li>경치 감상하며 전망대 위 카페에서 커피 한 잔 ☕</li>
                             </ul>
@@ -1105,10 +1106,9 @@
 
     <!-- 터치 친화적 노션 플로팅 버튼 -->
     <a href="https://www.notion.so/Dalian-20260228-2e71276b033e80e293d1c90878c79488" target="_blank"
-        class="floating-notion">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png" alt="Notion"
+        class="floating-notion" aria-label="예약 정보 보기">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png" alt="Notion 로고"
             class="notion-icon">
-        예약 정보 보기
     </a>
 
     <!-- 토스트 알림 -->
