@@ -82,9 +82,24 @@
             /* 헤더 아래 위치 */
             z-index: 90;
             display: flex;
+            justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-top: 10px;
+        }
+
+        /* 날씨 텍스트 뱃지 */
+        .weather-info {
+            font-size: 0.85em;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 10px;
+            border-radius: 20px;
+            letter-spacing: 0;
+            text-shadow: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         /* 일정 카드 리스트 (테이블을 버리고 ul/li + card 기반으로 재구축) */
@@ -411,7 +426,10 @@
 
         <ul class="timeline">
             <!-- 1일차 -->
-            <li class="day-header">✈️ Day 1 (2/28, 토)</li>
+            <li class="day-header" data-date="2026-02-28">
+                <span>✈️ Day 1 (2/28, 토)</span>
+                <span class="weather-info">⏳ 날씨조회중</span>
+            </li>
 
             <li class="timeline-item">
                 <div class="card-header">
@@ -605,7 +623,10 @@
             </li>
 
             <!-- 2일차 -->
-            <li class="day-header">🍱 Day 2 (3/1, 일)</li>
+            <li class="day-header" data-date="2026-03-01">
+                <span>🍱 Day 2 (3/1, 일)</span>
+                <span class="weather-info">⏳ 날씨조회중</span>
+            </li>
 
             <!-- 아침시장 옵션 탭 (Day 2) -->
             <li class="option-container">
@@ -913,7 +934,10 @@
             </li>
 
             <!-- 3일차 -->
-            <li class="day-header">🛍️ Day 3 (3/2, 월)</li>
+            <li class="day-header" data-date="2026-03-02">
+                <span>🛍️ Day 3 (3/2, 월)</span>
+                <span class="weather-info">⏳ 날씨조회중</span>
+            </li>
 
             <li class="timeline-item">
                 <div class="card-header">
@@ -1128,6 +1152,56 @@
                 targetContent.classList.add('active');
             }
         }
+
+        // 대련 날씨 데이터 가져오기 (Open-Meteo API)
+        async function fetchDalianWeather() {
+            try {
+                // 대련 위경도: 38.914, 121.6147
+                const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=38.914&longitude=121.6147&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FShanghai');
+                if (!res.ok) throw new Error('Weather API error');
+                const data = await res.json();
+
+                // 날씨 코드에 따른 이모지 맵핑 (WMO 규격)
+                const weatherMap = {
+                    0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
+                    45: '🌫️', 48: '🌫️',
+                    51: '🌧️', 53: '🌧️', 55: '🌧️',
+                    61: '🌧️', 63: '🌧️', 65: '🌧️',
+                    71: '❄️', 73: '❄️', 75: '❄️',
+                    95: '⛈️'
+                };
+
+                const dates = data.daily.time; // ["2026-02-26", ...]
+
+                document.querySelectorAll('.day-header').forEach(header => {
+                    const date = header.getAttribute('data-date');
+                    if (!date) return;
+
+                    const index = dates.indexOf(date);
+                    const weatherSpan = header.querySelector('.weather-info');
+
+                    if (index !== -1 && weatherSpan) {
+                        const code = data.daily.weathercode[index];
+                        const tempMax = Math.round(data.daily.temperature_2m_max[index]);
+                        const tempMin = Math.round(data.daily.temperature_2m_min[index]);
+                        // 날씨 코드에 맞는 이모지가 없으면 기본 흐림 아이콘
+                        const icon = weatherMap[code] || '☁️';
+
+                        weatherSpan.innerHTML = `${icon} <span style="color:#FFAAA5;">${tempMax}°</span> / <span style="color:#A5C8FF;">${tempMin}°</span>`;
+                    } else if (weatherSpan) {
+                        weatherSpan.innerHTML = '🌤️ -° / -°';
+                    }
+                });
+            } catch (error) {
+                console.error("날씨 정보를 불러오는 데 실패했습니다.", error);
+                document.querySelectorAll('.weather-info').forEach(span => {
+                    span.innerHTML = '🌤️ -° / -°';
+                });
+            }
+        }
+
+        // 페이지 로드 시 날씨 API 호출
+        document.addEventListener('DOMContentLoaded', fetchDalianWeather);
     </script>
 </body>
 
