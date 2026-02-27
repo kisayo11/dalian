@@ -4,79 +4,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🇨🇳 대련 2박 3일 여행 일정</title>
-    <!-- 트렌디하고 가독성 높은 Pretendard 웹폰트 적용 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <title>🇨🇳 다롄 여행 일정 & 정산</title>
+    <!-- Pretendard Font -->
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable.css" />
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* =========================================
+           GLOBAL & SUPER-APP VARIABLES
+        ========================================= */
         :root {
-            --primary: #0052CC;
-            --primary-light: #E9F2FF;
-            --dark: #172B4D;
-            --gray-100: #F4F5F7;
-            --gray-200: #DFE1E6;
-            --gray-500: #7A869A;
-            --gray-600: #5E6C84;
-            --gray-800: #344563;
-            --bg-color: #F8F9FA;
-            --accent-red: #DE350B;
-            --accent-yellow: #FFFAE6;
-            --border-yellow: #FFC400;
-            --card-shadow: 0 2px 8px rgba(9, 30, 66, 0.08);
+            /* Common */
+            --font-family: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+            --bg-body: #F8F9FA;
+
+            /* Itinerary Theme */
+            --iti-primary: #0052CC;
+            --iti-primary-light: #E9F2FF;
+            --iti-dark: #172B4D;
+            --iti-gray-100: #F4F5F7;
+            --iti-gray-200: #DFE1E6;
+            --iti-gray-600: #5E6C84;
+            --iti-gray-800: #344563;
+            --iti-accent-red: #DE350B;
+            --iti-accent-yellow: #FFFAE6;
+            --iti-border-yellow: #FFC400;
+            --iti-shadow: 0 2px 8px rgba(9, 30, 66, 0.08);
+
+            /* Settlement Theme */
+            --settle-bg: #f1f5f9;
+            --settle-receipt-bg: #ffffff;
+            --settle-primary: #0f172a;
+            --settle-accent: #2563eb;
+            --settle-accent-hover: #1d4ed8;
+            --settle-text-muted: #64748b;
+            --settle-border: #e2e8f0;
+            --settle-success: #059669;
+            --settle-danger: #dc2626;
+            --settle-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            font-family: var(--font-family);
+            background-color: var(--bg-body);
+            color: var(--iti-dark);
             line-height: 1.5;
-            color: var(--dark);
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 0;
+            min-height: 100vh;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 모바일 최적화 컨테이너 */
-        .container {
-            max-width: 600px;
-            /* 모바일 폭 기준 제한 */
-            width: 100%;
-            margin: 0 auto;
-            background: var(--bg-color);
-            padding-bottom: 80px;
-            /* 하단 플로팅 버튼 여백 */
+        /* Super-App Header (App Switcher) */
+        .super-app-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--iti-gray-200);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 10px 16px;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
-        .header {
+        .app-switch-btn {
+            flex: 1;
+            max-width: 200px;
+            padding: 12px 0;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--iti-gray-600);
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .app-switch-btn.active {
+            color: var(--iti-primary);
+            border-bottom-color: var(--iti-primary);
+        }
+
+        .app-container {
+            display: none;
+            /* Toggled via JS */
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            padding-bottom: 80px;
+            animation: fadeInApp 0.3s ease;
+        }
+
+        .app-container.active {
+            display: block;
+        }
+
+        @keyframes fadeInApp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* =========================================
+           1. ITINERARY APP STYLES
+        ========================================= */
+        #itinerary-app .iti-header {
             background-color: white;
             padding: 16px 20px;
-            border-bottom: 1px solid var(--gray-200);
+            border-bottom: 1px solid var(--iti-gray-200);
         }
 
-        h2 {
+        #itinerary-app h2.main-title {
             font-size: 1.35em;
             font-weight: 800;
-            margin: 0 0 8px 0;
-            color: var(--dark);
+            margin-bottom: 8px;
+            color: var(--iti-dark);
             text-align: left;
         }
 
-        .meta-info {
+        #itinerary-app .meta-info {
             display: flex;
             flex-direction: column;
             gap: 4px;
             font-size: 0.85em;
-            color: var(--gray-600);
+            color: var(--iti-gray-600);
         }
 
-        /* 일자별 섹션 헤더 (스티키) */
-        .day-header {
-            background-color: var(--gray-800);
+        #itinerary-app .day-header {
+            background-color: var(--iti-gray-800);
             color: white;
             font-weight: 700;
             font-size: 1.1em;
             padding: 12px 20px;
             position: sticky;
-            top: 0;
-            /* 화면 최상단에 고정 */
+            top: 60px;
             z-index: 90;
             display: flex;
             justify-content: space-between;
@@ -85,50 +161,43 @@
             margin-top: 10px;
         }
 
-        /* 날씨 텍스트 뱃지 */
-        .weather-info {
+        #itinerary-app .weather-info {
             font-size: 0.85em;
             font-weight: 600;
             background: rgba(255, 255, 255, 0.15);
             padding: 4px 10px;
             border-radius: 20px;
-            letter-spacing: 0;
-            text-shadow: none;
             display: flex;
             align-items: center;
             gap: 4px;
         }
 
-        /* 일정 카드 리스트 (테이블을 버리고 ul/li + card 기반으로 재구축) */
-        .timeline {
+        #itinerary-app .timeline {
             list-style: none;
-            padding: 0;
-            margin: 0;
         }
 
-        .timeline-item {
+        #itinerary-app .timeline-item {
             background: white;
             margin: 12px 16px;
             border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid var(--gray-200);
+            box-shadow: var(--iti-shadow);
+            border: 1px solid var(--iti-gray-200);
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
-        /* 카드 상단: 시간 및 메인 타이틀 */
-        .card-header {
+        #itinerary-app .card-header {
             display: flex;
             align-items: flex-start;
             padding: 16px 16px 12px 16px;
-            border-bottom: 1px dashed var(--gray-200);
+            border-bottom: 1px dashed var(--iti-gray-200);
         }
 
-        .time-badge {
+        #itinerary-app .time-badge {
             font-weight: 800;
-            color: var(--primary);
-            background: var(--primary-light);
+            color: var(--iti-primary);
+            background: var(--iti-primary-light);
             padding: 6px 10px;
             border-radius: 8px;
             font-size: 0.95em;
@@ -137,79 +206,75 @@
             text-align: center;
         }
 
-        .place-info {
+        #itinerary-app .place-info {
             flex: 1;
         }
 
-        .place-name {
+        #itinerary-app .place-name {
             font-size: 1.1em;
             font-weight: 800;
-            color: var(--dark);
+            color: var(--iti-dark);
             margin-bottom: 4px;
             line-height: 1.3;
         }
 
-        .transport {
+        #itinerary-app .transport {
             display: inline-flex;
             align-items: center;
             font-size: 0.8em;
-            color: var(--dark);
+            color: var(--iti-dark);
             background: #E3FCEF;
-            /* 연한 민트/그린 바탕 (좀 더 예쁜 칩 색상) */
             padding: 4px 10px;
             border-radius: 20px;
-            /* 완전 둥근 Pill/Chip 모양 */
             font-weight: 700;
             border: 1px solid #36B37E;
         }
 
-        /* 칩 종류별 색상 세분화 (선택적 사용) */
-        .transport.didi {
+        #itinerary-app .transport.didi {
             background: #FFF0B3;
             border-color: #FFAB00;
             color: #333;
         }
 
-        .transport.walk {
+        #itinerary-app .transport.walk {
             background: #E9F2FF;
             border-color: #4C9AFF;
-            color: var(--primary);
+            color: var(--iti-primary);
         }
 
-        .transport.flight {
+        #itinerary-app .transport.flight {
             background: #EAE6FF;
             border-color: #998DD9;
             color: #403294;
         }
 
-        /* 복사 가능한 주소 UI (모바일 터치 친화적) */
-        .address-box {
+        #itinerary-app .address-box {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background-color: var(--gray-100);
-            border: 1px solid var(--gray-200);
+            background-color: var(--iti-gray-100);
+            border: 1px solid var(--iti-gray-200);
             padding: 8px 12px;
             border-radius: 6px;
             margin-top: 8px;
         }
 
-        .address-text {
+        #itinerary-app .address-text {
             user-select: all;
             font-size: 0.95em;
-            color: var(--gray-800);
+            color: var(--iti-gray-800);
             font-weight: 600;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .copy-btn {
+        #itinerary-app .copy-btn {
             background: white;
-            border: 1px solid var(--gray-200);
+            border: 1px solid var(--iti-gray-200);
             cursor: pointer;
             padding: 6px 12px;
-            color: var(--primary);
+            color: var(--iti-primary);
             border-radius: 4px;
             font-weight: 700;
             font-size: 0.8em;
@@ -220,75 +285,134 @@
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
-        .copy-btn:active {
-            background-color: var(--gray-200);
+        #itinerary-app .copy-btn:active {
+            background-color: var(--iti-gray-200);
             transform: scale(0.98);
         }
 
-        /* 카드 하단: 세부 내용 및 비고 */
-        .card-body {
+        #itinerary-app .card-body {
             padding: 12px 16px 16px 16px;
         }
 
-        .details-col {
+        #itinerary-app .details-col {
             font-size: 0.95em;
             line-height: 1.5;
-            color: var(--gray-800);
+            color: var(--iti-gray-800);
         }
 
-        .details-col ul {
+        #itinerary-app .details-col ul {
             margin: 0;
             padding-left: 18px;
         }
 
-        .details-col li {
+        #itinerary-app .details-col li {
             margin-bottom: 6px;
         }
 
-        .details-col li:last-child {
-            margin-bottom: 0;
-        }
-
-        .remark-box {
+        #itinerary-app .remark-box {
             margin-top: 12px;
             font-size: 0.9em;
-            color: var(--gray-800);
-            background-color: var(--accent-yellow);
+            color: var(--iti-gray-800);
+            background-color: var(--iti-accent-yellow);
             padding: 10px 12px;
             border-radius: 6px;
-            border-left: 3px solid var(--border-yellow);
+            border-left: 3px solid var(--iti-border-yellow);
             display: flex;
             gap: 8px;
             align-items: flex-start;
         }
 
-        .remark-icon {
+        #itinerary-app .remark-icon {
             font-size: 1.1em;
             line-height: 1;
         }
 
-        .remark-content {
+        #itinerary-app .remark-content {
             flex: 1;
-            line-height: 1.5;
         }
 
-        .highlight {
-            color: var(--accent-red);
+        #itinerary-app .highlight {
+            color: var(--iti-accent-red);
             font-weight: 700;
         }
 
-        .highlight-blue {
-            color: var(--primary);
+        #itinerary-app .highlight-blue {
+            color: var(--iti-primary);
             font-weight: 700;
         }
 
-        /* 모바일 우측 하단 고정 노션 아이콘 버튼 */
+        /* Tabs for Itinerary */
+        #itinerary-app .option-container {
+            margin: 12px 16px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--iti-shadow);
+            border: 1px solid var(--iti-primary);
+            overflow: hidden;
+            position: relative;
+        }
+
+        #itinerary-app .option-header {
+            background-color: var(--iti-primary-light);
+            padding: 10px 16px;
+            font-size: 0.9em;
+            font-weight: 800;
+            color: var(--iti-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid var(--iti-gray-200);
+        }
+
+        #itinerary-app .iti-tabs {
+            display: flex;
+            padding: 12px 16px;
+            gap: 8px;
+            background: #FAFBFC;
+            border-bottom: 1px solid var(--iti-gray-200);
+        }
+
+        #itinerary-app .iti-tab-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            background: white;
+            border: 1px solid var(--iti-gray-200);
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9em;
+            color: var(--iti-gray-600);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #itinerary-app .iti-tab-btn.active {
+            background: var(--iti-primary);
+            color: white;
+            border-color: var(--iti-primary);
+            box-shadow: 0 2px 4px rgba(0, 82, 204, 0.2);
+        }
+
+        #itinerary-app .iti-tab-content {
+            display: none;
+        }
+
+        #itinerary-app .iti-tab-content.active {
+            display: block;
+        }
+
+        #itinerary-app .option-card-header {
+            display: flex;
+            align-items: flex-start;
+            padding: 16px 16px 12px 16px;
+            border-bottom: 1px dashed var(--iti-gray-200);
+        }
+
+        /* Floating Notion & Toast */
         .floating-notion {
             position: fixed;
             bottom: max(20px, env(safe-area-inset-bottom));
             right: 20px;
-            left: auto;
-            transform: none;
             background-color: white;
             padding: 0;
             border-radius: 50%;
@@ -296,15 +420,10 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            border: 1px solid var(--gray-200);
+            border: 1px solid var(--iti-gray-200);
             width: 54px;
             height: 54px;
-            z-index: 1000;
-            transition: transform 0.2s;
-        }
-
-        .floating-notion:active {
-            transform: scale(0.95);
+            z-index: 999;
         }
 
         .notion-icon {
@@ -312,79 +431,8 @@
             height: 26px;
         }
 
-
-        /* 옵션 탭 시스템 (스위치 버튼 스타일) */
-        .option-container {
-            margin: 12px 16px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid var(--primary);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .option-header {
-            background-color: var(--primary-light);
-            padding: 10px 16px;
-            font-size: 0.9em;
-            font-weight: 800;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            border-bottom: 1px solid var(--gray-200);
-        }
-
-        .tabs {
-            display: flex;
-            padding: 12px 16px;
-            gap: 8px;
-            background: #FAFBFC;
-            border-bottom: 1px solid var(--gray-200);
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 10px;
-            text-align: center;
-            background: white;
-            border: 1px solid var(--gray-200);
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.9em;
-            color: var(--gray-600);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 2px 4px rgba(0, 82, 204, 0.2);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* 옵션 내부의 카드 스타일 (timeline-item의 패딩과 공유) */
-        .option-card-header {
-            display: flex;
-            align-items: flex-start;
-            padding: 16px 16px 12px 16px;
-            border-bottom: 1px dashed var(--gray-200);
-        }
-
-        /* 토스트 알림 (모바일에 맞게 하단 플로팅 버튼 위로) */
         #toast {
             visibility: hidden;
-            width: auto;
             background-color: rgba(23, 43, 77, 0.9);
             color: #fff;
             text-align: center;
@@ -398,24 +446,454 @@
             font-size: 0.9em;
             font-weight: 600;
             opacity: 0;
-            transition: opacity 0.3s, bottom 0.3s;
+            transition: opacity 0.3s;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(4px);
         }
 
         #toast.show {
             visibility: visible;
             opacity: 1;
-            bottom: max(90px, calc(env(safe-area-inset-bottom) + 90px));
+        }
+
+        /* =========================================
+           2. SETTLEMENT APP STYLES
+        ========================================= */
+        #settlement-app {
+            background-color: var(--settle-bg);
+            padding-top: 1px;
+        }
+
+        #settlement-app .set-header {
+            background: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--settle-border);
+        }
+
+        #settlement-app .set-header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--settle-primary);
+        }
+
+        #settlement-app .set-header p {
+            font-size: 0.85rem;
+            color: var(--settle-text-muted);
+            margin-top: 4px;
+        }
+
+        /* Navigation Bottom Bar (Settlement) */
+        #settlement-app .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            display: flex;
+            border-top: 1px solid var(--settle-border);
+            padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
+            z-index: 100;
+        }
+
+        #settlement-app .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--settle-text-muted);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        #settlement-app .nav-item i {
+            font-size: 1.25rem;
+        }
+
+        #settlement-app .nav-item.active {
+            color: var(--settle-accent);
+        }
+
+        #settlement-app .set-view {
+            display: none;
+            padding: 20px;
+            animation: fade 0.2s ease;
+        }
+
+        #settlement-app .set-view.active {
+            display: block;
+        }
+
+        #settlement-app .receipt-card {
+            background: var(--settle-receipt-bg);
+            border-radius: var(--settle-radius);
+            padding: 24px 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            border: 1px solid var(--settle-border);
+        }
+
+        #settlement-app .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--settle-primary);
+        }
+
+        /* Forms */
+        #settlement-app .form-row {
+            margin-bottom: 20px;
+        }
+
+        #settlement-app label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--settle-text-muted);
+        }
+
+        #settlement-app .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        #settlement-app input,
+        #settlement-app select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--settle-border);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: #fafafa;
+            appearance: none;
+            color: var(--settle-primary);
+        }
+
+        #settlement-app select {
+            padding-right: 40px;
+        }
+
+        #settlement-app input:focus,
+        #settlement-app select:focus {
+            outline: none;
+            border-color: var(--settle-accent);
+            background: white;
+        }
+
+        #settlement-app .select-arrow {
+            position: absolute;
+            right: 16px;
+            color: var(--settle-text-muted);
+            pointer-events: none;
+        }
+
+        #settlement-app .currency-toggle {
+            display: flex;
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 12px;
+        }
+
+        #settlement-app .currency-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            color: var(--settle-text-muted);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        #settlement-app .currency-btn.active {
+            background: white;
+            color: var(--settle-primary);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        #settlement-app .rate-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            background: #f8fafc;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px dashed var(--settle-border);
+            margin-bottom: 24px;
+            color: var(--settle-primary);
+        }
+
+        #settlement-app .rate-info.warning {
+            border-color: #f59e0b;
+            background: #fffbeb;
+        }
+
+        #settlement-app .rate-input-wrap {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        #settlement-app .rate-input-wrap input {
+            padding: 4px 8px;
+            font-size: 0.85rem;
+            width: 70px;
+            text-align: right;
+            border-bottom: 1px solid var(--settle-border);
+            border-radius: 4px;
+            background: transparent;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+        }
+
+        #settlement-app .btn-submit {
+            width: 100%;
+            background: var(--settle-accent);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #settlement-app .btn-small {
+            background: var(--settle-bg);
+            border: 1px solid var(--settle-border);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--settle-primary);
+        }
+
+        /* Ledger */
+        #settlement-app .ledger-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        #settlement-app .entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--settle-border);
+        }
+
+        #settlement-app .entry:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        #settlement-app .entry-left {
+            flex: 1;
+            display: flex;
+            gap: 12px;
+        }
+
+        #settlement-app .entry-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        #settlement-app .entry-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--settle-primary);
+            margin-bottom: 2px;
+        }
+
+        #settlement-app .entry-meta {
+            font-size: 0.75rem;
+            color: var(--settle-text-muted);
+        }
+
+        #settlement-app .entry-right {
+            text-align: right;
+        }
+
+        #settlement-app .entry-amount {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--settle-primary);
+        }
+
+        #settlement-app .entry-original {
+            font-size: 0.75rem;
+            color: var(--settle-text-muted);
+            margin-top: 2px;
+        }
+
+        /* Dashboard */
+        #settlement-app .total-box {
+            text-align: center;
+            padding: 24px;
+            background: var(--settle-accent);
+            color: white;
+            border-radius: var(--settle-radius);
+            margin-bottom: 20px;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+        }
+
+        #settlement-app .total-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        #settlement-app .total-amount {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        #settlement-app .per-person {
+            font-size: 0.95rem;
+            background: rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-top: 12px;
+        }
+
+        #settlement-app .transfer-card {
+            background: white;
+            border: 1px solid var(--settle-border);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #settlement-app .transfer-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--settle-danger);
+        }
+
+        #settlement-app .transfer-route {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            color: var(--settle-primary);
+        }
+
+        #settlement-app .transfer-money {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--settle-primary);
+        }
+
+        #settlement-app .bg-1 {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        #settlement-app .bg-2 {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        #settlement-app .bg-3 {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        #settlement-app .bg-4 {
+            background: #f3e8ff;
+            color: #7e22ce;
+        }
+
+        #settlement-app .bg-5 {
+            background: #ffedd5;
+            color: #c2410c;
+        }
+
+        #settlement-app .loader {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        #settlement-app .loader.active {
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #settlement-app .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--settle-text-muted);
+            font-size: 0.9rem;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
 
-        <div class="header">
-            <h2>🇨🇳 대련 2박 3일 여행 일정</h2>
+    <!-- SUPER APP HEADER (Tabs) -->
+    <header class="super-app-header">
+        <button class="app-switch-btn active" onclick="switchMainApp('itinerary-app', this)">🗺️ 여행일정</button>
+        <button class="app-switch-btn" onclick="switchMainApp('settlement-app', this)">💸 공동지출등록</button>
+    </header>
+
+    <!-- =========================================
+         1. ITINERARY APP CONTAINER
+         ========================================= -->
+    <div id="itinerary-app" class="app-container active">
+        <div class="iti-header">
+            <h2 class="main-title">🇨🇳 대련 2박 3일 여행 일정</h2>
             <div class="meta-info">
                 <div class="meta-item">🏨 <strong>노보텔 대련 중산</strong></div>
                 <div class="meta-item">🗓️ <strong>2026.02.28(토) - 03.02(월)</strong></div>
@@ -426,7 +904,7 @@
             <!-- 1일차 -->
             <li class="day-header" data-date="2026-02-28">
                 <span>✈️ Day 1 (2/28, 토)</span>
-                <span class="weather-info">⏳ 날씨조회중</span>
+                <span class="weather-info iti-weather">⏳ 날씨조회중</span>
             </li>
 
             <li class="timeline-item">
@@ -473,7 +951,7 @@
             <li class="timeline-item">
                 <div class="card-header">
                     <div class="time-badge"><span
-                            style="font-size:0.7em;color:var(--gray-600);display:block;margin-bottom:-4px;">예상</span>18:30
+                            style="font-size:0.7em;color:var(--iti-gray-600);display:block;margin-bottom:-4px;">예상</span>19:00
                     </div>
                     <div class="place-info">
                         <div class="place-name">호텔 체크인 (노보텔 중산)</div>
@@ -499,7 +977,7 @@
             <li class="timeline-item">
                 <div class="card-header">
                     <div class="time-badge"><span
-                            style="font-size:0.7em;color:var(--gray-600);display:block;margin-bottom:-4px;">선택</span>19:30
+                            style="font-size:0.7em;color:var(--iti-gray-600);display:block;margin-bottom:-4px;">선택</span>19:30
                     </div>
                     <div class="place-info">
                         <div class="place-name">성해광장</div>
@@ -528,13 +1006,13 @@
                 <div class="option-header">
                     <span>🔄 1일차 야시장 코스 선택</span>
                 </div>
-                <div class="tabs">
-                    <button class="tab-btn active" onclick="switchTab('nm', 'nm-1', this)">옵션 A: 서안로 야시장</button>
-                    <button class="tab-btn" onclick="switchTab('nm', 'nm-2', this)">옵션 B: 라오지에 야시장</button>
+                <div class="iti-tabs">
+                    <button class="iti-tab-btn active" onclick="switchItiTab('nm', 'nm-1', this)">옵션 A: 서안로 야시장</button>
+                    <button class="iti-tab-btn" onclick="switchItiTab('nm', 'nm-2', this)">옵션 B: 라오지에 야시장</button>
                 </div>
 
                 <!-- 옵션 A: 서안로 -->
-                <div id="nm-1" class="tab-content nm active">
+                <div id="nm-1" class="iti-tab-content nm active">
                     <div class="option-card-header">
                         <div class="time-badge">20:30</div>
                         <div class="place-info">
@@ -563,7 +1041,7 @@
                 </div>
 
                 <!-- 옵션 B: 라오지에 -->
-                <div id="nm-2" class="tab-content nm">
+                <div id="nm-2" class="iti-tab-content nm">
                     <div class="option-card-header">
                         <div class="time-badge">20:30</div>
                         <div class="place-info">
@@ -594,9 +1072,9 @@
                 <div class="card-header">
                     <div class="time-badge">22:30</div>
                     <div class="place-info">
-                        <div class="place-name">천후촨</div>
-                        <div class="address-box" onclick="copyToClipboard('春和楼')">
-                            <span class="address-text">春和楼</span>
+                        <div class="place-name">천호천 (川虎川)</div>
+                        <div class="address-box" onclick="copyToClipboard('川虎川海鲜烧烤')">
+                            <span class="address-text">川虎川海鲜烧烤</span>
                             <button class="copy-btn">📋 복사</button>
                         </div>
                         <div class="transport" style="margin-top:8px;">🚶 도보 (호텔 1층)</div>
@@ -623,7 +1101,7 @@
             <!-- 2일차 -->
             <li class="day-header" data-date="2026-03-01">
                 <span>🍱 Day 2 (3/1, 일)</span>
-                <span class="weather-info">⏳ 날씨조회중</span>
+                <span class="weather-info iti-weather">⏳ 날씨조회중</span>
             </li>
 
             <!-- 아침시장 옵션 탭 (Day 2) -->
@@ -631,21 +1109,21 @@
                 <div class="option-header">
                     <span>🔄 2일차 기상 기상 시간 및 오전 일정</span>
                 </div>
-                <div class="tabs">
-                    <button class="tab-btn active" onclick="switchTab('mm', 'mm-1', this)">여유롭게 출발</button>
-                    <button class="tab-btn" onclick="switchTab('mm', 'mm-2', this)">이른 기상 & 아침시장</button>
+                <div class="iti-tabs">
+                    <button class="iti-tab-btn active" onclick="switchItiTab('mm', 'mm-1', this)">여유롭게 출발</button>
+                    <button class="iti-tab-btn" onclick="switchItiTab('mm', 'mm-2', this)">이른 기상 & 아침시장</button>
                 </div>
 
                 <!-- 옵션 A: 여유롭게 출발 -->
-                <div id="mm-1" class="tab-content mm active">
-                    <div class="card-body" style="text-align:center; padding: 30px; color: var(--gray-600);">
+                <div id="mm-1" class="iti-tab-content mm active">
+                    <div class="card-body" style="text-align:center; padding: 30px; color: var(--iti-gray-600);">
                         <div style="font-size: 2em; margin-bottom: 10px;">☕</div>
                         호텔 조식 또는 충분한 휴식 후<br><strong>10:00 에 베이징덕 뜯으러 바로 출발</strong>합니다.
                     </div>
                 </div>
 
                 <!-- 옵션 B: 아침시장 -->
-                <div id="mm-2" class="tab-content mm">
+                <div id="mm-2" class="iti-tab-content mm">
                     <div class="option-card-header">
                         <div class="time-badge">07:30</div>
                         <div class="place-info">
@@ -725,7 +1203,7 @@
                             <span class="address-text">贺牛寿喜烧专门店(柏威年)</span>
                             <button class="copy-btn">📋 복사</button>
                         </div>
-                        <div class="transport walk" style="margin-top:8px;">� 도보 (파빌리온 5층)</div>
+                        <div class="transport walk" style="margin-top:8px;"> 도보 (파빌리온 5층)</div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -752,13 +1230,13 @@
                 <div class="option-header">
                     <span>🔄 2일차 식후 자유시간 코스</span>
                 </div>
-                <div class="tabs">
-                    <button class="tab-btn active" onclick="switchTab('pm', 'pm-1', this)">쇼핑 & 카페타임</button>
-                    <button class="tab-btn" onclick="switchTab('pm', 'pm-2', this)">마사지 타임</button>
+                <div class="iti-tabs">
+                    <button class="iti-tab-btn active" onclick="switchItiTab('pm', 'pm-1', this)">쇼핑 & 카페타임</button>
+                    <button class="iti-tab-btn" onclick="switchItiTab('pm', 'pm-2', this)">마사지 타임</button>
                 </div>
 
                 <!-- 옵션 A: 쇼핑 -->
-                <div id="pm-1" class="tab-content pm active">
+                <div id="pm-1" class="iti-tab-content pm active">
                     <div class="option-card-header">
                         <div class="time-badge">15:00</div>
                         <div class="place-info">
@@ -781,7 +1259,7 @@
                 </div>
 
                 <!-- 옵션 B: 마사지 -->
-                <div id="pm-2" class="tab-content pm">
+                <div id="pm-2" class="iti-tab-content pm">
                     <div class="option-card-header">
                         <div class="time-badge">15:00</div>
                         <div class="place-info">
@@ -804,24 +1282,24 @@
                 <div class="card-header">
                     <div class="time-badge">16:30</div>
                     <div class="place-info">
-                        <div class="place-name">빅유마트</div>
-                        <div class="address-box" onclick="copyToClipboard('比优特生活广场(花样年华店)')">
-                            <span class="address-text">比优特生活广场(花样年华店)</span>
+                        <div class="place-name">빅유마트 (파빌리온 몰 B1)</div>
+                        <div class="address-box" onclick="copyToClipboard('比优特超市(柏威年店)')">
+                            <span class="address-text">比优特超市(柏威年店)</span>
                             <button class="copy-btn">📋 복사</button>
                         </div>
-                        <div class="transport didi" style="margin-top:8px;">🚕 디디</div>
+                        <div class="transport walk" style="margin-top:8px;">� 도보 (파빌리온 지하 1층)</div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="details-col">
                         <ul>
                             <li>B1층 / 09:00~21:00</li>
-                            <li>기념품 구입</li>
+                            <li>기념품 및 간식, 과일 구입</li>
                         </ul>
                     </div>
                     <div class="remark-box">
                         <span class="remark-icon">💼</span>
-                        <div class="remark-content">쇼핑 후 호텔 들려서 짐 놓고 이동</div>
+                        <div class="remark-content">마트 쇼핑 후, 디디로 호텔 들려서 짐 놓고 동방수성으로 이동</div>
                     </div>
                 </div>
             </li>
@@ -887,7 +1365,7 @@
             <li class="timeline-item">
                 <div class="card-header">
                     <div class="time-badge"><span
-                            style="font-size:0.7em;color:var(--gray-600);display:block;margin-bottom:-4px;">선택</span>20:00
+                            style="font-size:0.7em;color:var(--iti-gray-600);display:block;margin-bottom:-4px;">선택</span>20:00
                     </div>
                     <div class="place-info">
                         <div class="place-name">성해광장</div>
@@ -925,7 +1403,7 @@
                         <ul>
                             <li>17:00~24:00</li>
                             <li><a href="https://m.blog.naver.com/kafca20/223892347238" target="_blank"
-                                    style="color:var(--primary); font-weight:700;">추천 블로그 보기</a></li>
+                                    style="color:var(--iti-primary); font-weight:700;">추천 블로그 보기</a></li>
                         </ul>
                     </div>
                 </div>
@@ -934,7 +1412,7 @@
             <!-- 3일차 -->
             <li class="day-header" data-date="2026-03-02">
                 <span>🛍️ Day 3 (3/2, 월)</span>
-                <span class="weather-info">⏳ 날씨조회중</span>
+                <span class="weather-info iti-weather">⏳ 날씨조회중</span>
             </li>
 
             <li class="timeline-item">
@@ -978,16 +1456,16 @@
                 <div class="option-header">
                     <span>🔄 3일차 피로회복 vs 관광 코스</span>
                 </div>
-                <div class="tabs">
-                    <button class="tab-btn active" onclick="switchTab('d3', 'd3-1', this)">마사지 타임 💆</button>
-                    <button class="tab-btn" onclick="switchTab('d3', 'd3-2', this)">연화산 전망대 🌉</button>
+                <div class="iti-tabs">
+                    <button class="iti-tab-btn active" onclick="switchItiTab('d3', 'd3-1', this)">마사지 타임 💆</button>
+                    <button class="iti-tab-btn" onclick="switchItiTab('d3', 'd3-2', this)">연화산 전망대 🌉</button>
                 </div>
 
                 <!-- 옵션 A: 마사지 -->
-                <div id="d3-1" class="tab-content d3 active">
+                <div id="d3-1" class="iti-tab-content d3 active">
                     <div class="option-card-header">
                         <div class="time-badge"><span
-                                style="font-size:0.7em;color:var(--gray-600);display:block;margin-bottom:-4px;">유동적</span>12:30
+                                style="font-size:0.7em;color:var(--iti-gray-600);display:block;margin-bottom:-4px;">유동적</span>12:30
                         </div>
                         <div class="place-info">
                             <div class="place-name">마사지 타임 💆</div>
@@ -1006,7 +1484,7 @@
                 </div>
 
                 <!-- 옵션 B: 연화산 전망대 -->
-                <div id="d3-2" class="tab-content d3">
+                <div id="d3-2" class="iti-tab-content d3">
                     <div class="option-card-header">
                         <div class="time-badge">12:30</div>
                         <div class="place-info">
@@ -1099,106 +1577,358 @@
                 </div>
             </li>
         </ul>
+
+        <!-- Notion Float -->
+        <a href="https://www.notion.so/Dalian-20260228-2e71276b033e80e293d1c90878c79488" target="_blank"
+            class="floating-notion" aria-label="예약 정보 보기">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png" alt="Notion 로고"
+                class="notion-icon">
+        </a>
     </div>
 
-    <!-- 터치 친화적 노션 플로팅 버튼 -->
-    <a href="https://www.notion.so/Dalian-20260228-2e71276b033e80e293d1c90878c79488" target="_blank"
-        class="floating-notion" aria-label="예약 정보 보기">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Notion_app_logo.png" alt="Notion 로고"
-            class="notion-icon">
-    </a>
+    <!-- =========================================
+         2. SETTLEMENT APP CONTAINER
+         ========================================= -->
+    <div id="settlement-app" class="app-container">
 
-    <!-- 토스트 알림 -->
+        <header class="set-header">
+            <h1>제미나이 총무 💸</h1>
+            <p>각자 결제하고 등록만 하면 제미나이 총무가 정산해줘요!</p>
+        </header>
+
+        <main id="view-add" class="set-view active">
+            <div class="receipt-card">
+                <h2 class="section-title"><i class="fa-solid fa-receipt"></i> 영수증 등록</h2>
+                <form id="expense-form">
+                    <div class="form-row">
+                        <label>결제자</label>
+                        <div class="input-group">
+                            <select id="buyer" required>
+                                <option value="" disabled selected>선택하세요</option>
+                                <option value="강혜민">강혜민</option>
+                                <option value="김동휘">김동휘</option>
+                                <option value="김상용">김상용</option>
+                                <option value="이수란">이수란</option>
+                                <option value="최수빈">최수빈</option>
+                            </select>
+                            <i class="fa-solid fa-chevron-down select-arrow"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label>사용처</label>
+                        <input type="text" id="item" placeholder="예: 택시비, 시딩, 음료 등" required autocomplete="off">
+                    </div>
+
+                    <div class="form-row">
+                        <label>결제 금액</label>
+                        <div class="currency-toggle">
+                            <button type="button" class="currency-btn active" data-cur="CNY">위안 (CNY)</button>
+                            <button type="button" class="currency-btn" data-cur="KRW">원화 (KRW)</button>
+                        </div>
+                        <input type="number" id="amount" placeholder="0" step="any" required autocomplete="off"
+                            style="font-size: 1.5rem; font-weight: 700;">
+                    </div>
+
+                    <div class="rate-info" id="rate-block">
+                        <div><i class="fa-solid fa-bolt" style="color: #eab308; margin-right: 4px;"></i><span
+                                id="rate-status">실시간 환율 적용 중</span></div>
+                        <div class="rate-input-wrap">1위안 = <input type="number" id="exchangeRate" value="190"
+                                step="any"> 원</div>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submit-btn"><span id="btn-text">저장하기</span>
+                        <div class="loader" id="submit-loader"></div>
+                    </button>
+                </form>
+            </div>
+        </main>
+
+        <main id="view-ledger" class="set-view">
+            <div class="receipt-card">
+                <div class="ledger-header">
+                    <h2 class="section-title" style="margin: 0;"><i class="fa-solid fa-list"></i> 전체 지출 내역</h2>
+                    <button class="btn-small" onclick="fetchExpenses()"><i class="fa-solid fa-rotate-right"></i>
+                        새로고침</button>
+                </div>
+                <div id="list-container">
+                    <div class="empty-state">데이터를 불러오는 중입니다...</div>
+                </div>
+            </div>
+        </main>
+
+        <main id="view-settle" class="set-view">
+            <div class="total-box">
+                <div class="total-label">다롄 여행 총 지출액</div>
+                <div class="total-amount" id="total-expense">0원</div>
+                <div class="per-person">1인당 평균 : <b id="per-person">0원</b></div>
+            </div>
+            <h2 class="section-title"><i class="fa-sharp fa-solid fa-paper-plane"></i> 이렇게 송금하세요</h2>
+            <div id="transfer-container">
+                <div class="empty-state">계산된 정산 내역이 없습니다.</div>
+            </div>
+        </main>
+
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-view="view-add"><i class="fa-solid fa-plus-circle"></i><span>지출
+                    추가</span></button>
+            <button class="nav-item" data-view="view-ledger"><i class="fa-solid fa-list-check"></i><span>전체
+                    내역</span></button>
+            <button class="nav-item" data-view="view-settle"><i class="fa-solid fa-calculator"></i><span>N빵
+                    정산</span></button>
+        </nav>
+    </div>
+
+    <!-- Toast UI -->
     <div id="toast">✅ 주소가 복사되었습니다.</div>
 
     <script>
+        /* =========================================
+           GLOBAL JS
+        ========================================= */
+        function switchMainApp(targetAppId, btnElement) {
+            // Toggle App Header Buttons
+            document.querySelectorAll('.app-switch-btn').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            // Toggle Main Containers
+            document.querySelectorAll('.app-container').forEach(c => c.classList.remove('active'));
+            document.getElementById(targetAppId).classList.add('active');
+        }
+
+        /* =========================================
+           1. ITINERARY JS
+        ========================================= */
         function copyToClipboard(text) {
-            // 버튼 자체뿐만 아니라 address-box 전체 터치 시 복사 처리
             navigator.clipboard.writeText(text).then(function () {
                 var toast = document.getElementById("toast");
                 toast.className = "show";
-
-                // 디바이스 진동 피드백 (모바일 전용)
-                if (navigator.vibrate) {
-                    navigator.vibrate(50);
-                }
-
+                if (navigator.vibrate) navigator.vibrate(50);
                 setTimeout(function () { toast.className = toast.className.replace("show", ""); }, 2000);
-            }, function (err) {
-                console.error('복사 실패: ', err);
-                alert('복사에 실패했습니다. 직접 텍스트를 선택해 복사해주세요.');
-            });
+            }, function (err) { alert('복사에 실패했습니다.'); });
         }
 
-        // 탭 스위치 로직
-        function switchTab(groupClass, targetId, btnElement) {
-            // 해당 탭 그룹의 모든 탭 버튼 비활성화
-            const buttons = btnElement.parentElement.querySelectorAll('.tab-btn');
+        function switchItiTab(groupClass, targetId, btnElement) {
+            const buttons = btnElement.parentElement.querySelectorAll('.iti-tab-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
-
-            // 해당 그룹의 모든 컨텐츠 숨김
-            const contents = document.querySelectorAll('.tab-content.' + groupClass);
+            const contents = document.querySelectorAll('.iti-tab-content.' + groupClass);
             contents.forEach(content => content.classList.remove('active'));
-
-            // 클릭된 버튼 활성화
             btnElement.classList.add('active');
-
-            // 타겟 컨텐츠 노출
             const targetContent = document.getElementById(targetId);
-            if (targetContent) {
-                targetContent.classList.add('active');
-            }
+            if (targetContent) targetContent.classList.add('active');
         }
 
-        // 대련 날씨 데이터 가져오기 (Open-Meteo API)
         async function fetchDalianWeather() {
             try {
-                // 대련 위경도: 38.914, 121.6147
                 const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=38.914&longitude=121.6147&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FShanghai');
                 if (!res.ok) throw new Error('Weather API error');
                 const data = await res.json();
+                const weatherMap = { 0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️', 45: '🌫️', 48: '🌫️', 51: '🌧️', 53: '🌧️', 55: '🌧️', 61: '🌧️', 63: '🌧️', 65: '🌧️', 71: '❄️', 73: '❄️', 75: '❄️', 95: '⛈️' };
+                const dates = data.daily.time;
 
-                // 날씨 코드에 따른 이모지 맵핑 (WMO 규격)
-                const weatherMap = {
-                    0: '☀️', 1: '🌤️', 2: '⛅', 3: '☁️',
-                    45: '🌫️', 48: '🌫️',
-                    51: '🌧️', 53: '🌧️', 55: '🌧️',
-                    61: '🌧️', 63: '🌧️', 65: '🌧️',
-                    71: '❄️', 73: '❄️', 75: '❄️',
-                    95: '⛈️'
-                };
-
-                const dates = data.daily.time; // ["2026-02-26", ...]
-
-                document.querySelectorAll('.day-header').forEach(header => {
+                document.querySelectorAll('#itinerary-app .day-header').forEach(header => {
                     const date = header.getAttribute('data-date');
                     if (!date) return;
-
                     const index = dates.indexOf(date);
-                    const weatherSpan = header.querySelector('.weather-info');
-
+                    const weatherSpan = header.querySelector('.iti-weather');
                     if (index !== -1 && weatherSpan) {
                         const code = data.daily.weathercode[index];
                         const tempMax = Math.round(data.daily.temperature_2m_max[index]);
                         const tempMin = Math.round(data.daily.temperature_2m_min[index]);
-                        // 날씨 코드에 맞는 이모지가 없으면 기본 흐림 아이콘
                         const icon = weatherMap[code] || '☁️';
-
                         weatherSpan.innerHTML = `${icon} <span style="color:#FFAAA5;">${tempMax}°</span> / <span style="color:#A5C8FF;">${tempMin}°</span>`;
-                    } else if (weatherSpan) {
-                        weatherSpan.innerHTML = '🌤️ -° / -°';
-                    }
+                    } else if (weatherSpan) { weatherSpan.innerHTML = '🌤️ -° / -°'; }
                 });
             } catch (error) {
-                console.error("날씨 정보를 불러오는 데 실패했습니다.", error);
-                document.querySelectorAll('.weather-info').forEach(span => {
-                    span.innerHTML = '🌤️ -° / -°';
-                });
+                console.error("날씨 정보 실패", error);
             }
         }
 
-        // 페이지 로드 시 날씨 API 호출
-        document.addEventListener('DOMContentLoaded', fetchDalianWeather);
+        /* =========================================
+           2. SETTLEMENT JS
+        ========================================= */
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbysqubjdpoYnYQYWLOMfxgQphdfmQi7SfNepPXRSJQSoI0DRlosyC6ocqupwz4UgBe-1w/exec';
+
+        const set_state = {
+            apiUrl: WEB_APP_URL, currency: 'CNY', rate: 190.0, expenses: [],
+            friends: ['강혜민', '김동휘', '김상용', '이수란', '최수빈'],
+            colors: ['bg-1', 'bg-2', 'bg-3', 'bg-4', 'bg-5']
+        };
+
+        const setViews = document.querySelectorAll('.set-view');
+        const setNavItems = document.querySelectorAll('#settlement-app .nav-item');
+        const curBtns = document.querySelectorAll('.currency-btn');
+        const rateBlock = document.getElementById('rate-block');
+        const rateInput = document.getElementById('exchangeRate');
+
+        function setupSettleNavigation() {
+            setNavItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    setNavItems.forEach(n => n.classList.remove('active'));
+                    setViews.forEach(v => v.classList.remove('active'));
+                    item.classList.add('active');
+                    const targetId = item.getAttribute('data-view');
+                    document.getElementById(targetId).classList.add('active');
+                    if (targetId === 'view-ledger' || targetId === 'view-settle') {
+                        if (set_state.apiUrl && set_state.apiUrl !== 'YOUR_WEB_APP_URL_HERE') fetchExpenses();
+                        window.scrollTo(0, 0);
+                    }
+                });
+            });
+        }
+
+        function setupCurrencyToggle() {
+            curBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    curBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    set_state.currency = btn.getAttribute('data-cur');
+                    rateBlock.style.display = set_state.currency === 'KRW' ? 'none' : 'flex';
+                });
+            });
+        }
+
+        async function fetchLiveRate() {
+            try {
+                const res = await fetch('https://api.frankfurter.app/latest?from=CNY&to=KRW');
+                if (res.ok) {
+                    const data = await res.json();
+                    set_state.rate = data.rates.KRW;
+                    rateInput.value = set_state.rate.toFixed(1);
+                    document.getElementById('rate-status').innerText = '실시간 환율 모드';
+                }
+            } catch (e) {
+                document.getElementById('rate-status').innerText = '고정 환율 모드';
+                rateBlock.classList.add('warning');
+            }
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            if (!set_state.apiUrl || set_state.apiUrl === 'YOUR_WEB_APP_URL_HERE') { alert('API URL 에러'); return; }
+
+            const payload = {
+                buyer: document.getElementById('buyer').value,
+                item: document.getElementById('item').value,
+                amount: parseFloat(document.getElementById('amount').value),
+                currency: set_state.currency,
+                exchangeRate: parseFloat(rateInput.value) || 190
+            };
+
+            const btnText = document.getElementById('btn-text');
+            const loader = document.getElementById('submit-loader');
+            const submitBtn = document.getElementById('submit-btn');
+
+            btnText.style.display = 'none'; loader.classList.add('active'); submitBtn.disabled = true;
+
+            try {
+                const response = await fetch(set_state.apiUrl, { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    document.getElementById('expense-form').reset();
+                    document.querySelector('[data-view="view-ledger"]').click();
+                } else throw new Error(result.message);
+            } catch (err) { alert('저장 실패: ' + err.message); }
+            finally { btnText.style.display = 'block'; loader.classList.remove('active'); submitBtn.disabled = false; }
+        }
+
+        async function fetchExpenses() {
+            const container = document.getElementById('list-container');
+            try {
+                const response = await fetch(set_state.apiUrl);
+                const result = await response.json();
+                if (result.status === 'success') {
+                    set_state.expenses = result.data;
+                    renderLedger(); renderSettlement();
+                }
+            } catch (err) { container.innerHTML = '<div class="empty-state">데이터를 불러올 수 없습니다.</div>'; }
+        }
+
+        function renderLedger() {
+            const container = document.getElementById('list-container');
+            if (!set_state.expenses || set_state.expenses.length === 0) {
+                container.innerHTML = '<div class="empty-state">결제 내역이 없습니다.</div>'; return;
+            }
+            container.innerHTML = set_state.expenses.map(exp => {
+                const date = new Date(exp.Timestamp).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                const krw = Number(exp['Amount (KRW)']).toLocaleString();
+                const orig = exp.Currency === 'CNY' ? `${exp.Amount} CNY` : '';
+                const colorClass = set_state.colors[set_state.friends.indexOf(exp.Buyer) % 5] || 'bg-1';
+                const initial = exp.Buyer.substring(exp.Buyer.length - 2);
+                return `
+                    <div class="entry">
+                        <div class="entry-left"><div class="entry-avatar ${colorClass}">${initial}</div>
+                            <div><div class="entry-title">${exp.Item}</div><div class="entry-meta">${exp.Buyer} • ${date}</div></div>
+                        </div>
+                        <div class="entry-right"><div class="entry-amount">${krw}원</div><div class="entry-original">${orig}</div></div>
+                    </div>`;
+            }).join('');
+        }
+
+        function renderSettlement() {
+            if (!set_state.expenses || set_state.expenses.length === 0) return;
+            let totalKRW = 0;
+            const paidBy = {};
+            set_state.friends.forEach(f => paidBy[f] = 0);
+            set_state.expenses.forEach(exp => {
+                const amt = Number(exp['Amount (KRW)']);
+                totalKRW += amt;
+                if (paidBy[exp.Buyer] !== undefined) paidBy[exp.Buyer] += amt;
+                else { paidBy[exp.Buyer] = amt; set_state.friends.push(exp.Buyer); }
+            });
+            const perPerson = Math.round(totalKRW / set_state.friends.length);
+
+            document.getElementById('total-expense').innerText = totalKRW.toLocaleString() + '원';
+            document.getElementById('per-person').innerText = perPerson.toLocaleString() + '원';
+
+            const balances = {};
+            set_state.friends.forEach(f => balances[f] = paidBy[f] - perPerson);
+            let debtors = [], creditors = [];
+            for (let f in balances) {
+                if (balances[f] < -10) debtors.push({ name: f, amount: Math.abs(balances[f]) });
+                if (balances[f] > 10) creditors.push({ name: f, amount: balances[f] });
+            }
+            debtors.sort((a, b) => b.amount - a.amount); creditors.sort((a, b) => b.amount - a.amount);
+            const transfers = [];
+            let i = 0, j = 0;
+            while (i < debtors.length && j < creditors.length) {
+                let debtor = debtors[i], creditor = creditors[j];
+                let amount = Math.min(debtor.amount, creditor.amount);
+                amount = Math.round(amount);
+                transfers.push({ from: debtor.name, to: creditor.name, amount: amount });
+                debtor.amount -= amount; creditor.amount -= amount;
+                if (Math.abs(debtor.amount) < 10) i++;
+                if (Math.abs(creditor.amount) < 10) j++;
+            }
+
+            const container = document.getElementById('transfer-container');
+            if (transfers.length === 0) container.innerHTML = '<div class="empty-state">모든 정산이 완벽합니다! 🎉</div>';
+            else {
+                container.innerHTML = transfers.map(t => {
+                    const colorClassFrom = set_state.colors[set_state.friends.indexOf(t.from) % 5];
+                    const colorClassTo = set_state.colors[set_state.friends.indexOf(t.to) % 5];
+                    return `
+                    <div class="transfer-card">
+                        <div class="transfer-route">
+                            <div class="entry-avatar ${colorClassFrom}" style="width:32px;height:32px;font-size:0.75rem;">${t.from.substring(t.from.length - 2)}</div>
+                            <i class="fa-solid fa-arrow-right" style="color:var(--settle-border);"></i>
+                            <div class="entry-avatar ${colorClassTo}" style="width:32px;height:32px;font-size:0.75rem;">${t.to.substring(t.to.length - 2)}</div>
+                        </div>
+                        <div class="transfer-money">${t.amount.toLocaleString()}원</div>
+                    </div>`
+                }).join('');
+            }
+        }
+
+        // Initialize All
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchDalianWeather();
+            setupSettleNavigation();
+            setupCurrencyToggle();
+            fetchLiveRate();
+            if (set_state.apiUrl && set_state.apiUrl !== 'YOUR_WEB_APP_URL_HERE') fetchExpenses();
+            document.getElementById('expense-form').addEventListener('submit', handleFormSubmit);
+        });
     </script>
 </body>
 
